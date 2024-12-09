@@ -54,7 +54,7 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
 You can further extend this over many files using `manifest and imports`
 If no scenes are loaded from the imported file then you don't need to load in rust
 
-Make a central manifest file
+Make a central manifest file.
 
 `assets/manifest.cob`
 ```

@@ -11,7 +11,7 @@ Only the top level scenes can be loaded independently.
 
 ## Multiple manifests warning.
 
-you may get a warning as below, it means you have defined manifests in multiple files
+you may get a warning as below, it means you have defined manifests in multiple files.
 
 `WARN bevy_cobweb_ui::loading::cache::commands_buffer: reparenting file CobFile("ui/colour_scheme.cob") from Parent(CobFile("ui/panels/outliner.cob")) to Parent(CobFile("ui/moons.cob"))
     at /home/lyndonm/.cargo/git/checkouts/bevy_cobweb_ui-68d12fe85b5a400c/5b3a3aa/src/loading/cache/commands_buffer.rs:485`
