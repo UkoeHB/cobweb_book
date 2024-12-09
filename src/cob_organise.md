@@ -52,12 +52,16 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
 ## mainifests and imports
 
 You can further extend this over many files using `manifest and imports`
-If no scenes are loaded from the previous file the
+If no scenes are loaded from the manifest file the you don't need to(and shouldn't) load in rust
 
+example in `ui/manifest.cob`
 ```
 #manifest
 "ui/colour_scheme.cob" as cs
+```
 
+Put this in every file you want to access defs in `ui/colour_scheme.cob`
+```
 #import
 cs as colours
 ```

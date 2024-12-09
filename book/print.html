@@ -1092,11 +1092,13 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
 </code></pre>
 <h2 id="mainifests-and-imports"><a class="header" href="#mainifests-and-imports">mainifests and imports</a></h2>
 <p>You can further extend this over many files using <code>manifest and imports</code>
-If no scenes are loaded from the previous file the</p>
+If no scenes are loaded from the manifest file the you don't need to(and shouldn't) load in rust</p>
+<p>example in <code>ui/manifest.cob</code></p>
 <pre><code>#manifest
 "ui/colour_scheme.cob" as cs
-
-#import
+</code></pre>
+<p>Put this in every file you want to access defs in <code>ui/colour_scheme.cob</code></p>
+<pre><code>#import
 cs as colours
 </code></pre>
 <p>which can be referred using scoping and the <code>$</code> character</p>
@@ -1125,13 +1127,16 @@ Call it using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
 </ul>
 <h2 id="loading-documentation"><a class="header" href="#loading-documentation">Loading documentation.</a></h2>
 <p>you can find more details about cob files <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/index.html">here</a></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">errors</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
 <h2 id="forgetting-to-add-interactive-to-nodes"><a class="header" href="#forgetting-to-add-interactive-to-nodes">Forgetting to add Interactive to nodes</a></h2>
 <p>If you node defined in the cob file has to be interacted with make sure you put in <code>Interactive</code></p>
 <h2 id="odd-lifetime-errors-usually-about-static-lifetimes"><a class="header" href="#odd-lifetime-errors-usually-about-static-lifetimes">Odd lifetime errors, usually about static lifetimes</a></h2>
 <p>If you capture closures like in <code>on_pressed</code> make sure you use move and clone anything you need.</p>
 <h2 id="trying-to-load-non-top-level-scenes"><a class="header" href="#trying-to-load-non-top-level-scenes">Trying to load non top level scenes</a></h2>
 <p>Only the top level scenes can be loaded independently.</p>
+<h2 id="loading-manifests-in-multiple-files"><a class="header" href="#loading-manifests-in-multiple-files">Loading manifests in multiple files</a></h2>
+<p>If you have warnings about reparenting its likely because your have manifests defined in multiple places
+<code>   WARN bevy_cobweb_ui::loading::cache::commands_buffer: reparenting file CobFile("ui/colour_scheme.cob") from Parent(CobFile("ui/panels/outliner.cob")) to Parent(CobFile("ui/moons.cob"))     at /home/lyndonm/.cargo/git/checkouts/bevy_cobweb_ui-68d12fe85b5a400c/5b3a3aa/src/loading/cache/commands_buffer.rs:485</code></p>
 
                     </main>
 
@@ -1150,22 +1155,6 @@ Call it using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
