@@ -2,7 +2,10 @@
 
 https://ukoehb.github.io/cobweb_book/
 
-# how to build the book.
+# Additional documentation 
+https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/
+
+# How to build the book locally.
 
 This book is created using
 [mdbook](https://rust-lang.github.io/mdBook/)
