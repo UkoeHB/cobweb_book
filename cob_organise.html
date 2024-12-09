@@ -220,11 +220,13 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
 </code></pre>
 <h2 id="mainifests-and-imports"><a class="header" href="#mainifests-and-imports">mainifests and imports</a></h2>
 <p>You can further extend this over many files using <code>manifest and imports</code>
-If no scenes are loaded from the previous file the</p>
+If no scenes are loaded from the manifest file the you don't need to(and shouldn't) load in rust</p>
+<p>example in <code>ui/manifest.cob</code></p>
 <pre><code>#manifest
 "ui/colour_scheme.cob" as cs
-
-#import
+</code></pre>
+<p>Put this in every file you want to access defs in <code>ui/colour_scheme.cob</code></p>
+<pre><code>#import
 cs as colours
 </code></pre>
 <p>which can be referred using scoping and the <code>$</code> character</p>
@@ -260,22 +262,6 @@ cs as colours
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
