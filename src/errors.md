@@ -1,4 +1,4 @@
-# errors
+# Errors
 
 ## Forgetting to add Interactive to nodes
 If you node defined in the cob file has to be interacted with make sure you put in `Interactive`
