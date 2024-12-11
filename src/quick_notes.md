@@ -31,3 +31,11 @@ There are others as well.
 
 ## Loading documentation.
 you can find more details about cob files [here](https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/index.html)
+
+## Pulling existing node.
+
+For creating nodes from scratch we used `commands.ui_builder(UiRoot)`, if we want to modify and existing Ui substitue `UiRoot` with the the entity you want to edit from 
+If you use `commands.get` you can end up with the below errors.
+
+`WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken.
+    at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267`

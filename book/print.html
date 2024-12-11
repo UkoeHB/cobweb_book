@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> introduction</a></li><li class="chapter-item expanded "><a href="starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organise.html"><strong aria-hidden="true">6.</strong> Cob file organisation</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section</li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">8.</strong> errors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organise.html"><strong aria-hidden="true">6.</strong> Cob file organisation</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section</li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">8.</strong> Errors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -1127,6 +1127,10 @@ Call it using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
 </ul>
 <h2 id="loading-documentation"><a class="header" href="#loading-documentation">Loading documentation.</a></h2>
 <p>you can find more details about cob files <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/index.html">here</a></p>
+<h2 id="pulling-existing-node"><a class="header" href="#pulling-existing-node">Pulling existing node.</a></h2>
+<p>For creating nodes from scratch we used <code>commands.ui_builder(UiRoot)</code>, if we want to modify and existing Ui substitue <code>UiRoot</code> with the the entity you want to edit from
+If you use <code>commands.get</code> you can end up with the below errors.</p>
+<p><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken.     at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
 <h2 id="forgetting-to-add-interactive-to-nodes"><a class="header" href="#forgetting-to-add-interactive-to-nodes">Forgetting to add Interactive to nodes</a></h2>
 <p>If you node defined in the cob file has to be interacted with make sure you put in <code>Interactive</code></p>
@@ -1137,6 +1141,11 @@ Call it using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
 <h2 id="loading-manifests-in-multiple-files"><a class="header" href="#loading-manifests-in-multiple-files">Loading manifests in multiple files</a></h2>
 <p>If you have warnings about reparenting its likely because your have manifests defined in multiple places
 <code>   WARN bevy_cobweb_ui::loading::cache::commands_buffer: reparenting file CobFile("ui/colour_scheme.cob") from Parent(CobFile("ui/panels/outliner.cob")) to Parent(CobFile("ui/moons.cob"))     at /home/lyndonm/.cargo/git/checkouts/bevy_cobweb_ui-68d12fe85b5a400c/5b3a3aa/src/loading/cache/commands_buffer.rs:485</code></p>
+<h2 id="no-using-ui_builder-to-retrieve-an-interface"><a class="header" href="#no-using-ui_builder-to-retrieve-an-interface">No using ui_builder to retrieve an interface</a></h2>
+<p>if you get an error like below.</p>
+<p>Substitute UiRoot with the entity you want to work from
+<code>commands.ui_builder(UiRoot)</code></p>
+<p><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken.     at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
 
                     </main>
 

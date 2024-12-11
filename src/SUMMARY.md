@@ -1,6 +1,6 @@
 # Summary
 
-- [introduction](./introduction.md)
+- [Introduction](./introduction.md)
 - [Getting started](./starting.md)
 # Cob File Format
 - [Cob files](./cob_intro.md)
@@ -14,4 +14,4 @@
 # Cookbook section
 
 # Common errors
-- [errors](./errors.md)
+- [Errors](./errors.md)

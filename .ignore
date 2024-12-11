@@ -1,0 +1,9 @@
+ # Ignore everything
+*
+
+
+# ...and not the books directory...
+!/src
+
+# ...and all files and subdirectories in books
+!/src/**
