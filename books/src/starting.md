@@ -2,7 +2,7 @@
 
 
 ## Commands 
-Lets make an empty project to test this out
+let's make an empty project to test this out
 
 `cargo new cobweb_test`
 
@@ -85,4 +85,4 @@ add in the following code
 ```
 
 
-Now lets run the program we have our first bevy cobweb program, next chapter we can start making changes *Without recompiling*
+Now let's run the program we have our first bevy cobweb program, next chapter we can start making changes *Without recompiling*

@@ -97,7 +97,7 @@ I could just have easily made exit and despawn child of `main_scene` there is no
 
 ## Rust approach
 
-Lets look at the first way of doing this using what is likely to be a more familiar approach to you.
+let's look at the first way of doing this using what is likely to be a more familiar approach to you.
 
 
 
@@ -127,7 +127,7 @@ fn build_ui(mut c: Commands, mut s: ResMut<SceneLoader>) {
         });
 }
 ```
-Now lets add despawning button, we can use `on_pressed` along with a normal bevy query.
+Now let's add despawning button, we can use `on_pressed` along with a normal bevy query.
 
 ```rs
 use bevy::prelude::*;
@@ -191,7 +191,7 @@ fn main() {
 }
 ```
 
-Now lets add the exit button which will not any more difficult
+Now let's add the exit button which will not any more difficult
 
 ```rs
 use bevy::prelude::*;
@@ -262,7 +262,7 @@ fn main() {
 ```
 ### spawn other interface
 
-Lets add a function for spawning the new interface
+let's add a function for spawning the new interface
 
 ```rs
 fn spawn_other_interface(mut c: Commands, mut s: ResMut<SceneLoader>) {
@@ -398,7 +398,7 @@ impl Instruction for MainInterface {
 }
 ```
 We don't need the arguments in this case so we can ignore them.
-now lets remove `insert code` and register the component type.
+now let's remove `insert code` and register the component type.
 
 ```rs
 use bevy::prelude::*;
@@ -491,7 +491,7 @@ fn main() {
 }
 ```
 
-Lets now add this to our COB file.
+let's now add this to our COB file.
 
 ```
 #scenes

@@ -1,7 +1,7 @@
 # Summary
 
-- [introduction](./introduction.md)
-- [Getting started](./starting.md)
+- [Introduction](./introduction.md)
+- [Getting started](./getting_starting.md)
 # Cob File Format
 - [Cob files](./cob_intro.md)
   - [Loadable fields](./cob_fields.md)
@@ -9,9 +9,9 @@
 - [Rust runtime modifications](./rust_cobweb.md)
 - [Custom marker component](./cob_marker.md)
 # Final tutorial notes
-- [Cob file organisation](./cob_organise.md)
+- [Cob file organization](./cob_organization.md)
 - [Quick notes](./quick_notes.md)
-# Cookbook section
+# Cookbook section (TODO)
 
 # Common errors
-- [errors](./errors.md)
+- [Errors](./errors.md)

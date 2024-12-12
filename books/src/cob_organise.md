@@ -5,7 +5,7 @@
 Cob files can have variables so you can define common values, that can be used all over your cob files.
 This will allow you to make changes in one place to impact multiple nodes.
 
-Lets do an example.
+let's do an example.
 
 ```
 //defs is another type of section so far we have only been doing scenes

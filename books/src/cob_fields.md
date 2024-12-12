@@ -7,7 +7,7 @@ When you read the documentation of each loadable hopefully you will be able to e
 Rerun your program if you have closed it.
 
 ## Node shadow
-Lets start with adding a `NodeShadow` to our example the documentation can be found [here](https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/ui_bevy/struct.NodeShadow.html)
+let's start with adding a `NodeShadow` to our example the documentation can be found [here](https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/ui_bevy/struct.NodeShadow.html)
 
 At the time of writing looked like this
 ```
@@ -20,7 +20,7 @@ pub struct NodeShadow {
 }
 ````
 
-lets start with val before color as it is slightly simpler
+let's start with val before color as it is slightly simpler
 
 ### Val
 
@@ -86,7 +86,7 @@ Floats are written similar to how they are written in rust.
 - Integer-to-float conversion: 1 can be written instead of 1.0.
 - Keywords inf/-inf/nan: infinity, negative infinity, NaN.
 
-lets go ahead with an example using `size` in `TextLine` 
+let's go ahead with an example using `size` in `TextLine` 
 
 ```
 #scenes

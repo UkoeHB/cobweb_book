@@ -36,7 +36,7 @@ Types that implement the [instruction trait](https://docs.rs/bevy_cobweb_ui/late
 
 *Loadables should not have a space between the opening `{`
 
-Lets add another
+let's add another
 `AbsoluteNode`
 
 ```
@@ -51,7 +51,7 @@ We have now moved the text around you can also experiment with other units such 
 Separate fields are not comma separated.
 
 
-Lets try another loadable `BackGroundColor`
+let's try another loadable `BackGroundColor`
 
 ```
 #scenes
@@ -68,7 +68,7 @@ Hex values are built into cobweb as colour
 #### Animations 
 
 
-lets add hovering effects we will start off by changing  the background colours based on user hovering.
+let's add hovering effects we will start off by changing  the background colours based on user hovering.
 
 ##### Hovering and pressing
 

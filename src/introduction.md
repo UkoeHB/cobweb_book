@@ -13,8 +13,6 @@ This book is intended to give you a starting point for making your own UI.
 
 ## Structure of the book
 
-We will start off with the most basic example possible from there the book
-will split off into recipes that you can browse as you need them for your
-own application
+We will start off with the most basic example possible. From there the book will split off into recipes that you can browse as you need them for your own projects.
 
-A final section will cover some common errors
+The final section will cover some common errors.

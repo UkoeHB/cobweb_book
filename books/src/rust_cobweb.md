@@ -3,7 +3,7 @@
 We will be using rust to modify the contents of text at runtime (no hot reloading).
 
 ## Modify the cob file
-Lets setup the cob file as below.
+let's setup the cob file as below.
 
 ```
 "scene"
@@ -44,7 +44,7 @@ bevy_cobweb_ui = { git = "https://github.com/UkoeHB/bevy_cobweb_ui.git", feature
 </div>
 
 ### Updating text at runtime
-Lets change the rust code to be as below.
+let's change the rust code to be as below.
 
 ```rs
 fn build_ui(mut c: Commands, mut s: ResMut<SceneLoader>) {
@@ -71,7 +71,7 @@ Recompile and run the program you will see your text has changed to reflect the 
 
 ### Spawning new nodes
 
-Cobweb can also spawn multiple top level scenes lets start with an example.
+Cobweb can also spawn multiple top level scenes let's start with an example.
 
 Below we have our new scene called `number_text`.
 
@@ -98,7 +98,7 @@ If the concept of scenes was a bit confusing before this should clarify it a bit
             TextLine{text:"placeholder"}
 ```
 
-Now lets change our rust code to spawn some scenes.
+Now let's change our rust code to spawn some scenes.
 
 ```rs
 fn build_ui(mut c: Commands, mut s: ResMut<SceneLoader>) {

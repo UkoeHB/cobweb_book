@@ -2,31 +2,34 @@
 
 
 ## Commands 
-Lets make an empty project to test this out
 
-`cargo new cobweb_test`
+let's make an empty project to test it out:
 
-`cd cobweb_test/`
+```
+cargo new cobweb_test
+cd cobweb_test
+```
 
-This book won't be making any distinction between cobweb and cobweb_ui
-`cargo add bevy_cobweb`
+This book won't be making any distinction between `bevy_cobweb` and `bevy_cobweb_ui`. `bevy_cobweb` is a reactivity library that `bevy_cobweb_ui` uses for convenience methods like `.on_pressed`.
+```
+cargo add bevy_cobweb
+cargo add bevy_cobweb_ui -F hot_reload
+```
 
-
-`cargo add bevy_cobweb_ui -F hot_reload`
-
-We are definitely adding hot reloading, but you can remove on your release version.
+We are definitely adding hot reloading, but you can remove it for your release version.
 
 
 ## Syntax Highlighting
-you can optionally install syntax highlighting for the cob files we will be using
 
-[instructions here](https://github.com/UkoeHB/bevy_cobweb_ui)
+You can optionally install syntax highlighting for the cob files we will be using.
+
+[Instructions here](https://github.com/UkoeHB/bevy_cobweb_ui).
 
 
 
 ## Rust Code
 
-set your main to be as below.
+Set your `main.rs` to be as below.
 
 ```rs
 use bevy::prelude::*;
@@ -59,30 +62,31 @@ fn main()
 }
 ```
 
-This will add systems to handle loading of your files and other plumbing
+This will add systems to handle loading of your files and other plumbing:
 `.add_plugins(CobwebUiPlugin)`
 
-This tells cobweb to load this file
+This tells cobweb to load this cob file:
 `.load("main.cob")`
 
-When all the cob files are loaded this will call our setup ui
+When all the cob files are loaded this will call our UI setup system:
 `.add_systems(OnEnter(LoadState::Done), build_ui)`
 
-make a new ui with its own root node
+This makes a new UI hierarchy with its own root node:
 `c.ui_root().load_scene(("main.cob", "main_scene"), &mut s);`
 
 
 ## COB code
-Create a new folder called `assets`
+Create a new folder called `assets`.
 
-Create a new file called `main.cob`
+Create a new file called `main.cob`.
 
-add in the following code
-```
+Add in the following:
+```rust
 #scenes
 "main_scene"
     TextLine{ text: "Hello, World!" }
 ```
 
+Now let's run the program.
 
-Now lets run the program we have our first bevy cobweb program, next chapter we can start making changes *Without recompiling*
+We have our first cobweb UI program. Next chapter we can start making changes *without recompiling*.

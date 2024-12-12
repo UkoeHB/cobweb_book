@@ -2,7 +2,7 @@
 
 Rerun your program built in the previous chapters if you have closed it already.
 
-To start off lets add hovering changing background colours based on user hovering.
+To start off let's add hovering changing background colours based on user hovering.
 
 ## Hovering and pressing
 
