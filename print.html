@@ -1,0 +1,1073 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>cobweb book</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">8.</strong> Errors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">cobweb book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Cobweb is a UI and asset-management framework for the bevy game engine.</p>
+<h2 id="cobweb-features"><a class="header" href="#cobweb-features">Cobweb Features</a></h2>
+<ul>
+<li>Custom scene format called COB</li>
+<li>Localization framework (text, fonts, images, audio)</li>
+<li>Font family API</li>
+<li>Built-in UI widgets and color palettes</li>
+<li>Asset management tools</li>
+<li>And many quality of life features.</li>
+</ul>
+<p>This book is intended to give you a starting point for making your own UI.</p>
+<h2 id="structure-of-the-book"><a class="header" href="#structure-of-the-book">Structure of the book</a></h2>
+<p>We will start off with the most basic example possible. From there the book will split off into recipes that you can browse as you need them for your own projects.</p>
+<p>The final section will cover some common errors.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting started</a></h1>
+<h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
+<p>let's make an empty project to test it out:</p>
+<pre><code>cargo new cobweb_test
+cd cobweb_test
+</code></pre>
+<p>This book won't be making any distinction between <code>bevy_cobweb</code> and <code>bevy_cobweb_ui</code>. <code>bevy_cobweb</code> is a reactivity library that <code>bevy_cobweb_ui</code> uses for convenience methods like <code>.on_pressed</code>.</p>
+<pre><code>cargo add bevy_cobweb
+cargo add bevy_cobweb_ui -F hot_reload
+</code></pre>
+<p>We are definitely adding hot reloading, but you can remove it for your release version.</p>
+<h2 id="syntax-highlighting"><a class="header" href="#syntax-highlighting">Syntax Highlighting</a></h2>
+<p>You can optionally install syntax highlighting for the cob files we will be using.</p>
+<p><a href="https://github.com/UkoeHB/bevy_cobweb_ui">Instructions here</a>.</p>
+<h2 id="rust-code"><a class="header" href="#rust-code">Rust Code</a></h2>
+<p>Set your <code>main.rs</code> to be as below.</p>
+<pre><code class="language-rs">use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;)
+{
+    c.spawn(Camera2d);
+    c.ui_root().load_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn main()
+{
+    App::new()
+        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                window_theme: Some(bevy::window::WindowTheme::Dark),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(CobwebUiPlugin)
+        .load(&quot;main.cob&quot;)
+        .add_systems(OnEnter(LoadState::Done), build_ui)
+        .run();
+}
+</code></pre>
+<p>This will add systems to handle loading of your files and other plumbing:
+<code>.add_plugins(CobwebUiPlugin)</code></p>
+<p>This tells cobweb to load this cob file:
+<code>.load(&quot;main.cob&quot;)</code></p>
+<p>When all the cob files are loaded this will call our UI setup system:
+<code>.add_systems(OnEnter(LoadState::Done), build_ui)</code></p>
+<p>This makes a new UI hierarchy with its own root node:
+<code>c.ui_root().load_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);</code></p>
+<h2 id="cob-code"><a class="header" href="#cob-code">COB code</a></h2>
+<p>Create a new folder called <code>assets</code>.</p>
+<p>Create a new file called <code>main.cob</code>.</p>
+<p>Add in the following:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    TextLine{ text: &quot;Hello, World!&quot; }
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now let's run the program.</p>
+<p>We have our first cobweb UI program. Next chapter we can start making changes <em>without recompiling</em>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cob-files"><a class="header" href="#cob-files">Cob files</a></h1>
+<p>Cob allows you to separate your UI from your code, in addition to enabling hot reloading of changes. Cob is whitespace-sensitive.</p>
+<h2 id="sections"><a class="header" href="#sections">Sections</a></h2>
+<p>Cob files are made up of sections. For now, we will explore one type of section.</p>
+<h3 id="scenes"><a class="header" href="#scenes">Scenes</a></h3>
+<p>Scenes are declared following the <code>#scenes</code> keyword. Scenes are given a name. In our example, we use <code>&quot;main_scene&quot;</code>... extremely creative. We use scene root nodes to load scenes Cobweb. We will need to recompile to add new scenes to our app.</p>
+<h4 id="extending-our-example"><a class="header" href="#extending-our-example">Extending our example.</a></h4>
+<p>First, rerun the program if you have closed it.  We want to see the hot reloading in action.</p>
+<p>Let's change our cob file to be something like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="loadables"><a class="header" href="#loadables">Loadables</a></h4>
+<p>Loadables are Rust types that can be added to the scene nodes. For now, we will only explore one type of loadable:</p>
+<p>Types that implement the <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/trait.Instruction.html">instruction trait</a>.</p>
+<p><code>TextLine</code> is an example of a loadable.</p>
+<p><em>Loadables should not have space between their name and the opening <code>{</code>.</em></p>
+<p>let's add another called <code>AbsoluteNode</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    AbsoluteNode{left:40% top:30vh}
+    TextLine{ text: &quot;Hello, World!, I am writing using cobweb&quot; }
+
+<span class="boring">}
+</span></code></pre></pre>
+<p>We have now moved the text around. You can also experiment with other units such as <code>40px 40vw</code>.</p>
+<p>Separate fields are not comma separated.</p>
+<p>let's try another loadable <code>BackgroundColor</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    AbsoluteNode{left:40%}
+    BackgroundColor(#FFFF00)
+    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
+
+<span class="boring">}
+</span></code></pre></pre>
+<p>We can see this does not contrast well with the text without recompiling!</p>
+<p>Hex values convert to <code>Srgba</code> colours.</p>
+<h4 id="animations"><a class="header" href="#animations">Animations</a></h4>
+<p>Let's add hovering effects. We will start off by changing the background colours based on user hovering.</p>
+<h5 id="hovering-and-pressing"><a class="header" href="#hovering-and-pressing">Hovering and pressing</a></h5>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    AbsoluteNode{left:40%}
+    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
+    
+    Animated&lt;BackgroundColor&gt;{
+        idle:#FF0000 // You can also input colours in other formats
+        hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+        press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>Animated</code> is a loadable that works with implementers of the <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/sickle_ext/trait.AnimatableAttribute.html">AnimatableAttribute trait</a>. One example implementer is <code>BackgroundColor</code>.</p>
+<h4 id="next"><a class="header" href="#next">Next</a></h4>
+<p>Next we will look at how we know what loadables we can use based on the documentation, and what fields are available in each loadable.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="loadables-and-their-fields"><a class="header" href="#loadables-and-their-fields">Loadables and their fields</a></h1>
+<p>So far you have just been given the types to modify. This page aims to explain the different data types in cob files.
+When you read the documentation of each loadable hopefully you will be able to easily implement it.</p>
+<p>Rerun your program if you have closed it.</p>
+<h2 id="node-shadow"><a class="header" href="#node-shadow">Node shadow</a></h2>
+<p>let's start with adding a <code>NodeShadow</code> to our example. The documentation can be found <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/ui_bevy/struct.NodeShadow.html">here</a>.</p>
+<p>At the time of writing it looked like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NodeShadow {
+    pub color: Color,
+    pub x_offset: Val,
+    pub y_offset: Val,
+    pub spread_radius: Val,
+    pub blur_radius: Val,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Let's start with <code>Val</code> before color as it is slightly simpler.</p>
+<h3 id="val"><a class="header" href="#val">Val</a></h3>
+<p><code>Val</code> variants can be written with special units (<code>px, %, vw, vh, vmin, vmax</code>) and the keyword <code>auto</code>. For example, <code>10px</code> is equivalent to <code>Px(10)</code>.</p>
+<h3 id="colour"><a class="header" href="#colour">Colour</a></h3>
+<p>In our previous examples we have loaded colour using both RGB and HSLA.</p>
+<h4 id="hex"><a class="header" href="#hex">Hex</a></h4>
+<p>Hex colours are a special data type in cob and can just be written as <code>#FF00FF</code> with an implied alpha of <code>FF</code>. You can also add an explicit alpha by adding in extra digits <code>#FF00FFEE</code>.</p>
+<h4 id="newtype-collapsing"><a class="header" href="#newtype-collapsing">NewType collapsing</a></h4>
+<p>Loadable newtypes and newtype enum variants use newtype collapsing to simplify what you write. Newtypes are collapsed by discarding 'outer layers'.</p>
+<p>An example we have used for HSLA. This is written in rust:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>Color::Hsla(Hsla {
+    hue: 240.0,
+    saturation:1.0,
+    lightness: 0.5,
+    alpha:1.0,
+})
+<span class="boring">}
+</span></code></pre></pre>
+<p>And this is written in cob:</p>
+<p><code>Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }</code></p>
+<p>The rule for enums inside loadables is <code>A::B(C{ .. }) -&gt; B{ .. }</code>. Newtype collapsing can occur for loadables like <code>A(vec![]) -&gt; A[]</code>.</p>
+<h3 id="defaults"><a class="header" href="#defaults">Defaults</a></h3>
+<p>Not all fields in loadables need to be filled out. Every field left blank we will be defaulted. Only fields annotated with <code>#[reflect(default)]</code> can be skipped.</p>
+<h3 id="adding-nodeshadow"><a class="header" href="#adding-nodeshadow">Adding NodeShadow</a></h3>
+<p>With the above information we have enough to create our node shadow:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    AbsoluteNode{left:40%}
+    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
+    NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px} // &lt;-- our new node shadow
+    Animated&lt;BackgroundColor&gt;{
+        idle:#FF0000 // You can also input colours in other formats
+        hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+        press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+    }
+    
+<span class="boring">}
+</span></code></pre></pre>
+<p>Done</p>
+<h3 id="floats"><a class="header" href="#floats">Floats</a></h3>
+<p>Floats are written similar to how they are written in rust.</p>
+<ul>
+<li>Scientific notation: <code>1.2e3</code> or <code>1.2E3</code>.</li>
+<li>Integer-to-float conversion: <code>1</code> can be written instead of <code>1.0</code>.</li>
+<li>Keywords <code>inf</code>/<code>-inf</code>/<code>nan</code>: infinity, negative infinity, <code>NaN</code>.</li>
+</ul>
+<p>Let's go ahead with an example using <code>size</code> in <code>TextLine</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    AbsoluteNode{left:40%}
+    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; size:150 } // &lt;-- add the size here
+    NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px}
+    Animated&lt;BackgroundColor&gt;{
+        idle:#FF0000 // You can input colours in other formats
+        hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+        press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+    }
+
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="strings"><a class="header" href="#strings">Strings</a></h3>
+<p>Strings are handled similar to how rust string literals are handled.</p>
+<ul>
+<li>Enclosed by double quotes (e.g. <code>&quot;Hello, World!&quot;</code>).</li>
+<li>Escape sequences: standard ASCII escape sequences are supported (<code>\n</code>, <code>\t</code>, <code>\r</code>, <code>\f</code>, <code>\&quot;</code>, <code>\\</code>), in addition to Unicode code points (<code>\u{..1-6 digit hex..}</code>).</li>
+<li>Multi-line strings: a string segment that ends in <code>\</code> followed by a newline will be concatenated with the next non-space character on the next line.</li>
+<li>Can contain raw Unicode characters.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="using-rust-to-update-text"><a class="header" href="#using-rust-to-update-text">Using rust to update text</a></h1>
+<p>We will be using rust to modify the contents of a text node at runtime (no hot reloading).</p>
+<h2 id="modify-the-cob-file"><a class="header" href="#modify-the-cob-file">Modify the cob file</a></h2>
+<p>Let's setup the cob file as below.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&quot;scene&quot;
+    AbsoluteNode{left:40%}
+    &quot;cell&quot;
+        Animated&lt;BackgroundColor&gt;{
+            idle:#FF0000 // You can input colours in other formats
+            hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+            press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+        }
+        NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px}
+        &quot;text&quot;
+            TextLine{text:&quot;Hello, World!, I am writing using cobweb &quot;} // &lt;-- will be overwritten
+
+<span class="boring">}
+</span></code></pre></pre>
+<p>We split position logic into a child node called <code>cell</code> which holds most of the positioning and styling logic.
+<code>cell</code> has a child called <code>text</code>. Text is a minimal node responsible for just text stuff.</p>
+<h3 id="why-we-split-text-from-styling"><a class="header" href="#why-we-split-text-from-styling">Why we split text from styling</a></h3>
+<p>This is more of an html/CSS pattern then anything particular with cobweb but it is worth mentioning here.</p>
+<p>It just turns out to be easier to position nodes than it is to position text.</p>
+<h2 id="rust"><a class="header" href="#rust">Rust</a></h2>
+<h3 id="updating-text-at-runtime"><a class="header" href="#updating-text-at-runtime">Updating text at runtime</a></h3>
+<p>Let's change the rust code to be as below.</p>
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+        });
+}
+</code></pre>
+<p>We have changed <code>load_scene</code> to be <code>load_scene_and_edit</code>.</p>
+<p>When we load <code>&quot;main_scene&quot;</code> in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>loaded_scene</code> similar to commands along with extension methods provided by cobweb.</p>
+<p>Inside the closure we call <code>get(cell::text)</code> which is basically a path syntax to go straight to the text node. It also possible to call <code>edit</code> on <code>&quot;cell&quot;</code> then call <code>update_text</code> inside the resulting closure.</p>
+<p>Recompile and run the program. You will see your text has changed to reflect the rust code.</p>
+<h3 id="spawning-new-nodes"><a class="header" href="#spawning-new-nodes">Spawning new nodes</a></h3>
+<p>Cobweb can also spawn new scenes inside other scenes. Let's start with an example.</p>
+<p>Below we have our new scene called <code>number_text</code>.</p>
+<p>If the concept of scenes was a bit confusing before, this should clarify it a bit more.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;scene&quot;
+    AbsoluteNode{left:40% flex_direction:Column}
+    &quot;cell&quot;
+        Animated&lt;BackgroundColor&gt;{
+            idle:#FF0000 // You can input colours in other formats
+            hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+            press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+        }
+        NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px}
+        &quot;text&quot;
+            TextLine{text:&quot;Hello, World!, I am writing using cobweb &quot;}
+
+
+&quot;number_text&quot;
+    &quot;cell&quot;
+        &quot;text&quot;
+            TextLine{text:&quot;placeholder&quot;}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now let's change our rust code to spawn some scenes.</p>
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            // Spawning new ui nodes inside our main scene
+            for i in (0..=10).into_iter() {
+                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                    loaded_scene.get(&quot;cell::text&quot;).update_text(i.to_string());
+                });
+            }
+        });
+}
+</code></pre>
+<p>We now have some numbers that appear based on your code. We can still modify the cob files and change styling:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&quot;number_text&quot;
+    &quot;cell&quot;
+        &quot;text&quot;
+            TextLine{text:&quot;placeholder&quot;}
+            TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}) // &lt;-- add this
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="making-nodes-interactive"><a class="header" href="#making-nodes-interactive">Making nodes interactive</a></h4>
+<p>Setting our UI to react to the user is essential, and easy. First we need to add the <code>Interactive</code> loadable.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&quot;number_text&quot;
+    &quot;cell&quot;
+        &quot;text&quot;
+            TextLine{text:&quot;placeholder&quot;}
+            TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
+            Interactive // Sets up the node for user interaction
+
+<span class="boring">}
+</span></code></pre></pre>
+<p>Now we can use <code>on_pressed</code>:</p>
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            for i in (0..=10).into_iter() {
+                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
+                        loaded_scene.update_text(i.to_string());
+                        loaded_scene.on_pressed(move|/* We can write arbitrary bevy parameters here*/|{
+                            println!(&quot;You clicked {}&quot;, i);
+                        });
+                    });
+                });
+            }
+        });
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-marker-component"><a class="header" href="#custom-marker-component">Custom marker component</a></h1>
+<p>In bevy it's common to have marker components. That is, components with no data that mark the entity as having some user-defined purpose. There are at least two ways to do this.</p>
+<p>Before looking at either approach we should set some goals.</p>
+<p>Goals:</p>
+<ul>
+<li>Add an exit button to the interface.</li>
+<li>Add a button to despawn the interface.</li>
+<li>On despawning add another button to respawn the interface.</li>
+</ul>
+<p>Here is our code that we've built so far, adding in a <code>MainInterface</code> marker component.</p>
+<pre><code class="language-rs">use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+//-------------------------------------------------------------------------------------------------------------------
+
+#[derive(Component)]
+struct MainInterface;
+
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            for i in (0..=10).into_iter() {
+                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
+                        loaded_scene.update_text(i.to_string());
+                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                            println!(&quot;You clicked {}&quot;, i);
+                        });
+                    });
+                });
+            }
+        });
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn main() {
+    App::new()
+        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                window_theme: Some(bevy::window::WindowTheme::Dark),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(CobwebUiPlugin)
+        .load(&quot;main.cob&quot;)
+        .add_systems(OnEnter(LoadState::Done), build_ui)
+        .run();
+}
+</code></pre>
+<p>And here is the cob file we've built, adding in some small button scenes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    AbsoluteNode{left:40% flex_direction:Column}
+    &quot;cell&quot;
+        Animated&lt;BackgroundColor&gt;{
+            idle:#FF0000
+            hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+            press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+        }
+        NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px}
+        &quot;text&quot;
+            TextLine{text:&quot;Hello, World!, I am writing using cobweb &quot;}
+
+
+&quot;number_text&quot;
+    &quot;cell&quot;
+        &quot;text&quot;
+            TextLine{text:&quot;placeholder&quot;}
+            TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
+            Interactive
+
+
+&quot;exit_button&quot;
+    TextLine{text:&quot;Exit&quot;}
+    Interactive
+&quot;despawn_button&quot;
+    TextLine{text:&quot;Despawn&quot;}
+    Interactive
+&quot;respawn_button&quot;
+    TextLine{text:&quot;Respawn&quot;}
+    Interactive
+<span class="boring">}
+</span></code></pre></pre>
+<p>The exit and despawn buttons could just as easily be added as children of <code>main_scene</code>.</p>
+<h2 id="rust-approach"><a class="header" href="#rust-approach">Rust approach</a></h2>
+<p>Let's look at the first way of doing this using what is likely to be a more familiar approach to you.</p>
+<pre><code class="language-rs">#[derive(Component)]
+struct MainInterface;
+
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene.insert(MainInterface); // &lt;-- add the marker component
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            for i in (0..=10).into_iter() {
+                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
+                        loaded_scene.update_text(i.to_string());
+                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                            println!(&quot;You clicked {}&quot;, i);
+                        });
+                    });
+                });
+            }
+        });
+}
+</code></pre>
+<p>Now let's add the despawning button. We can use <code>on_pressed</code> along with a normal bevy query.</p>
+<pre><code class="language-rs">use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+//-------------------------------------------------------------------------------------------------------------------
+
+#[derive(Component)]
+struct MainInterface;
+
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene.insert(MainInterface);
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            for i in (0..=10).into_iter() {
+                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
+                        loaded_scene.update_text(i.to_string());
+                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                            println!(&quot;You clicked {}&quot;,i);
+                        });
+                    });
+                });
+            }
+
+            // NEW: despawn button
+            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+                // Despawn the main interface on press.
+                // Notice this looks like a normal bevy query.
+                loaded_scene.on_pressed(
+                    |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
+                     mut commands: Commands| {
+                        // Cobweb callbacks can use `?` if you return `OK` or `DONE`.
+                        // The .result() converts Options to Results.
+                        commands
+                            .get_entity(interface_query.get_single()?)
+                            .result()?
+                            .despawn_recursive();
+                        OK
+                    },
+                );
+            });
+        });
+}
+</code></pre>
+<p>Now let's add the exit button, which will not by any more difficult:</p>
+<pre><code class="language-rs">use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+//-------------------------------------------------------------------------------------------------------------------
+
+#[derive(Component)]
+struct MainInterface;
+
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene.insert(MainInterface);
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            for i in (0..=10).into_iter() {
+                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
+                        loaded_scene.update_text(i.to_string());
+                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                            println!(&quot;You clicked {}&quot;, i);
+                        });
+                    });
+                });
+            }
+            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+                loaded_scene.on_pressed(
+                    |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
+                     mut commands: Commands| {
+                        commands
+                            .get_entity(interface_query.get_single()?)
+                            .result()?
+                            .despawn_recursive();
+                        OK
+                    },
+                );
+            });
+
+            // NEW: exit button
+            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
+                loaded_scene.on_pressed(
+                    |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
+                        let window = focused_windows.get_single()?;
+                        commands.get_entity(window).result()?.despawn();
+                        OK
+                    },
+                );
+            });
+        });
+}
+</code></pre>
+<h3 id="spawn-new-interface"><a class="header" href="#spawn-new-interface">Spawn new interface</a></h3>
+<p>Let's add a system for making respawn buttons. The respawn button will spawn the main interface.</p>
+<pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
+            //TODO respawning main interface
+        });
+}
+</code></pre>
+<p>Now call it on despawn</p>
+<pre><code class="language-rs">            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+                loaded_scene.on_pressed(
+                    |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
+                     mut commands: Commands| {
+                        commands
+                            .get_entity(interface_query.get_single()?)
+                            .result()?
+                            .despawn_recursive();
+                        // NEW: spawn the respawn button
+                        commands.run_system_cached(spawn_respawn_button);
+                    },
+                );
+            });
+</code></pre>
+<p><code>run_system_cached</code> is a convenient way to call a function arbitrarily when you don't need to supply data. Consider observers if you do. You can also use <code>syscall</code> from <code>bevy_cobweb</code>.</p>
+<p>We can now despawn the main interface. Another approach could have been writing <code>run_system_cached</code> as an observer, and sending an event to trigger it in our <code>&quot;despawn_button&quot;</code> callback.</p>
+<p>All there is to do now is fill in the respawn logic. There is not much to discuss so will see the updated code below.</p>
+<pre><code class="language-rs">use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+//-------------------------------------------------------------------------------------------------------------------
+
+#[derive(Component)]
+struct MainInterface;
+
+fn build_ui(mut c: Commands) {
+    c.spawn(Camera2d);
+    c.run_system_cached(spawn_main_interface);
+}
+
+fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            loaded_scene.insert(MainInterface);
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            for i in (0..=10).into_iter() {
+                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
+                        loaded_scene.update_text(i.to_string());
+                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                            println!(&quot;You clicked {}&quot;,i);
+                        });
+                    });
+                });
+            }
+            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+                loaded_scene.on_pressed(
+                    |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
+                     mut commands: Commands| {
+                        commands
+                            .get_entity(interface_query.get_single()?)
+                            .result()?
+                            .despawn_recursive();
+                        commands.run_system_cached(spawn_other_interface);
+                        OK
+                    },
+                );
+            });
+            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
+                loaded_scene.on_pressed(
+                    |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
+                        let window = focused_windows.get_single()?;
+                        commands.get_entity(window).result()?.despawn();
+                        OK
+                    },
+                );
+            });
+        });
+}
+
+fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
+            let entity = loaded_scene.id();
+            loaded_scene.on_pressed(move |mut commands: Commands| {
+                commands.get_entity(entity).result()?.despawn_recursive();
+                commands.run_system_cached(spawn_main_interface);
+                OK
+            });
+        });
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn main() {
+    App::new()
+        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                window_theme: Some(bevy::window::WindowTheme::Dark),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(CobwebUiPlugin)
+        .load(&quot;main.cob&quot;)
+        .add_systems(OnEnter(LoadState::Done), build_ui)
+        .run();
+}
+</code></pre>
+<p>To despawn the current scene we can get the entity using <code>.id()</code>.</p>
+<h2 id="moving-maininterface-to-a-cob-file"><a class="header" href="#moving-maininterface-to-a-cob-file">Moving MainInterface to a cob file</a></h2>
+<p>Now let's try out another way to add marker components via cob files.</p>
+<p>We need to add some derives:</p>
+<pre><code class="language-rs">
+#[derive(Component, Default, PartialEq, Reflect)]
+struct MainInterface;
+</code></pre>
+<p>Now let's remove the <code>.insert(MainInterface)</code> and register the component type.</p>
+<pre><code class="language-rs">use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+//-------------------------------------------------------------------------------------------------------------------
+
+#[derive(Component, Default, PartialEq, Reflect)]
+struct MainInterface;
+
+fn build_ui(mut c: Commands) {
+    c.spawn(Camera2d);
+    c.run_system_cached(spawn_main_interface);
+}
+
+fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    c.ui_root()
+        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+            // &lt;-- We no longer have insert here
+            loaded_scene
+                .get(&quot;cell::text&quot;)
+                .update_text(&quot;My runtime text&quot;);
+
+            // ...
+        });
+}
+
+fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+    // ...
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn main() {
+    App::new()
+        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                window_theme: Some(bevy::window::WindowTheme::Dark),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(CobwebUiPlugin)
+        .register_component_type::&lt;MainInterface&gt;() // &lt;-- This allows cob to load this type
+        .load(&quot;main.cob&quot;)
+        .add_systems(OnEnter(LoadState::Done), build_ui)
+        .run();
+}
+</code></pre>
+<p>Let's now add <code>MainInterface</code> to our cob file.</p>
+<pre><code class="language-rs">#scenes
+&quot;main_scene&quot;
+    MainInterface // &lt;-- NEW
+    AbsoluteNode{left:40%,flex_direction:Column}
+    &quot;cell&quot;
+        Animated&lt;BackgroundColor&gt;{
+            idle:#FF0000
+            hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+            press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+        }
+        NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px}
+        &quot;text&quot;
+            TextLine{text:&quot;Hello, World!, I am writing using cobweb &quot;}
+
+
+&quot;number_text&quot;
+    &quot;cell&quot;
+        &quot;text&quot;
+            TextLine{text:&quot;placeholder&quot;}
+            TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
+            Interactive
+
+
+&quot;exit_button&quot;
+    TextLine{text:&quot;Exit&quot;}
+    Interactive
+&quot;despawn_button&quot;
+    TextLine{text:&quot;Despawn&quot;}
+    Interactive
+&quot;respawn_button&quot;
+    TextLine{text:&quot;Respawn&quot;}
+    Interactive
+</code></pre>
+<p>We are now done.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cob-file-organization"><a class="header" href="#cob-file-organization">Cob file organization</a></h1>
+<h2 id="defs-section"><a class="header" href="#defs-section">#defs section</a></h2>
+<p>Cob files can have constants that let you define common values to be used all over your cob files. This will allow you to make changes in one place to impact multiple nodes.</p>
+<p>Let's do an example.</p>
+<pre><code class="language-rs">// #defs is another type of section. So far we have only been doing #scenes.
+#defs
+$text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
+
+#scenes
+&quot;main_scene&quot;
+    MainInterface
+    AbsoluteNode{left:40% flex_direction:Column}
+    &quot;cell&quot;
+        Animated&lt;BackgroundColor&gt;{
+            idle:#FF0000
+            hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
+            press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
+        }
+        NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px}
+        &quot;text&quot;
+            TextLine{text:&quot;Hello, World!, I am writing using cobweb &quot;}
+
+
+&quot;number_text&quot;
+    &quot;cell&quot;
+        &quot;text&quot;
+            TextLine{text:&quot;placeholder&quot;}
+            TextLineColor($text_colour) // &lt;-- now uses a constant
+            Interactive
+
+
+&quot;exit_button&quot;
+    TextLine{text:&quot;Exit&quot;}
+    TextLineColor($text_colour) // &lt;-- now uses a constant
+    Interactive
+&quot;despawn_button&quot;
+    TextLine{text:&quot;Despawn&quot;}
+    TextLineColor($text_colour) // &lt;-- now uses a constant
+    Interactive
+&quot;respawn_button&quot;
+    TextLine{text:&quot;Respawn&quot;}
+    TextLineColor($text_colour) // &lt;-- now uses a constant
+    Interactive
+</code></pre>
+<h2 id="manifest-and-import"><a class="header" href="#manifest-and-import">#manifest and #import</a></h2>
+<p>You can further extend this over many files using <code>#manifest</code> and <code>#import</code> sections.</p>
+<h3 id="manifest"><a class="header" href="#manifest">#manifest</a></h3>
+<p>Manifests let you load many files recursively. This way you only need to write <code>.load(&quot;manifest.cob&quot;)</code> once in your app.</p>
+<p>Make a central manifest file at <code>assets/manifest.cob</code>:</p>
+<pre><code>#manifest
+&quot;main.cob&quot; as main
+&quot;ui/colour_scheme.cob&quot; as cs
+</code></pre>
+<p>The <code>as main</code> defines a manifest key for the file <code>main.cob</code>.</p>
+<p>Now replace the <code>.load(&quot;main.cob&quot;)</code> in your app with <code>.load(&quot;manifest.cob&quot;)</code>. You can also simplify <code>.load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), ...)</code> to <code>.load_scene_and_edit((&quot;main&quot;, &quot;main_scene&quot;), ...)</code>, using the main file's manifest key.</p>
+<h3 id="import"><a class="header" href="#import">#import</a></h3>
+<p>Imports let you bring in <code>#defs</code> from other files.</p>
+<p>In any file where you want to import defs you can do as below.</p>
+<pre><code>#import
+cs as colours
+</code></pre>
+<p>Defs from <code>cs</code> are scoped to the import alias <code>colours</code>:</p>
+<pre><code>BackgroundColor($colours::background_colour)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quick-notes"><a class="header" href="#quick-notes">Quick notes</a></h1>
+<p>This section will mention notes that did not come up in the tutorial but may still be helpful for you.</p>
+<h2 id="loading-cob-files"><a class="header" href="#loading-cob-files">Loading Cob files</a></h2>
+<p>When you have a cob file that defines scenes, you must register with the app by using this syntax (or add it to a manifest section of another file):
+<code>.load(&quot;main.cob&quot;)</code></p>
+<h3 id="waiting-for-loadstatedone"><a class="header" href="#waiting-for-loadstatedone">Waiting for LoadState::Done</a></h3>
+<p>If your UI is to appear at the start of the game then you should wait to ensure cobweb has had a chance to read its scene data.
+<code>.add_systems(OnEnter(LoadState::Done), build_ui)</code></p>
+<p>If your UI comes up in response to player actions on other UI, then calling it using observers or events should be fine as cob files would have been already read by cobweb.</p>
+<h2 id="other-features-not-covered-at-least-for-now"><a class="header" href="#other-features-not-covered-at-least-for-now">Other features not covered (at least for now!)</a></h2>
+<h3 id="cobweb-has-reactive-features"><a class="header" href="#cobweb-has-reactive-features">Cobweb has reactive features.</a></h3>
+<p>Some examples can be found <a href="https://github.com/UkoeHB/bevy_cobweb_ui/tree/main/examples">here</a>.</p>
+<p>You can use broadcasts to refresh your ui, <code>update_on(broadcast::&lt;MyArbitaryStruct&gt;(),|/*bevy query*/|{});</code>
+Call it using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
+<p>There are others as well.</p>
+<h3 id="other-features"><a class="header" href="#other-features">Other features</a></h3>
+<ul>
+<li>Radio button widget: we hope to have an example later. It can also be useful for tabbing.</li>
+<li><a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/sickle_ext/index.html">Here's</a> a good starting point for animations, states, interactions.</li>
+<li>Localization: there is an example <a href="https://github.com/UkoeHB/bevy_cobweb_ui/tree/main/examples/localization">here</a>, with documentation <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/localization/index.html">here</a>.</li>
+<li>Commands: cob files include a <code>#commands</code> section. TODO</li>
+</ul>
+<h2 id="cob-documentation"><a class="header" href="#cob-documentation">Cob documentation.</a></h2>
+<p>You can find more details about cob files <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/index.html">here</a>.</p>
+<h2 id="pulling-existing-node-to-edit"><a class="header" href="#pulling-existing-node-to-edit">Pulling existing node to edit</a></h2>
+<p>For creating nodes from scratch we used <code>commands.ui_builder(UiRoot)</code> (or <code>commands.ui_root()</code>). If we want to modify an existing UI node, substitue <code>UiRoot</code> with the entity you want to edit. If you use <code>commands.get</code> you can end up with this error:
+<code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken. at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
+<h2 id="forgetting-to-add-interactive-to-nodes"><a class="header" href="#forgetting-to-add-interactive-to-nodes">Forgetting to add Interactive to nodes</a></h2>
+<p>If your node defined in the cob file has to be interacted with (e.g. with <code>.on_pressed()</code>), make sure you put in <code>Interactive</code>.</p>
+<h2 id="odd-lifetime-errors-usually-about-static-lifetimes"><a class="header" href="#odd-lifetime-errors-usually-about-static-lifetimes">Odd lifetime errors, usually about static lifetimes</a></h2>
+<p>If you capture data in closures like <code>.on_pressed()</code>, make sure you use move and clone anything you need.</p>
+<h2 id="trying-to-load-non-top-level-scenes"><a class="header" href="#trying-to-load-non-top-level-scenes">Trying to load non-top-level scenes</a></h2>
+<p>Only the top level scenes can be loaded as scenes independently.</p>
+<h2 id="multiple-manifests-warning"><a class="header" href="#multiple-manifests-warning">Multiple manifests warning.</a></h2>
+<p>You may get a warning like below, it means you added a file to multiple manifests in different files.</p>
+<p><code>WARN bevy_cobweb_ui::loading::cache::commands_buffer: reparenting file CobFile(&quot;ui/colour_scheme.cob&quot;) from Parent(CobFile(&quot;ui/panels/outliner.cob&quot;)) to Parent(CobFile(&quot;ui/moons.cob&quot;)) at /home/lyndonm/.cargo/git/checkouts/bevy_cobweb_ui-68d12fe85b5a400c/5b3a3aa/src/loading/cache/commands_buffer.rs:485</code></p>
+<h2 id="non-using-ui_builder-to-load-a-scene"><a class="header" href="#non-using-ui_builder-to-load-a-scene">Non using <code>ui_builder</code> to load a scene</a></h2>
+<p>If you get an error like below when loading a scene inside another scene, then substitute <code>UiRoot</code> with the entity you want to load into:
+<code>commands.ui_builder(UiRoot)</code></p>
+<pre><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken.
+    at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>
