@@ -162,17 +162,17 @@
 <h2 id="rust"><a class="header" href="#rust">Rust</a></h2>
 <h3 id="updating-text-at-runtime"><a class="header" href="#updating-text-at-runtime">Updating text at runtime</a></h3>
 <p>Let's change the rust code to be as below.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s:ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
         });
 }
 </code></pre>
-<p>We have changed <code>load_scene</code> to be <code>load_scene_and_edit</code>.</p>
+<p>We have changed <code>spawn_scene</code> to be <code>spawn_scene_and_edit</code>.</p>
 <p>When we load <code>&quot;main_scene&quot;</code> in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>loaded_scene</code> similar to commands along with extension methods provided by cobweb.</p>
 <p>Inside the closure we call <code>get(cell::text)</code> which is basically a path syntax to go straight to the text node. It also possible to call <code>edit</code> on <code>&quot;cell&quot;</code> then call <code>update_text</code> inside the resulting closure.</p>
 <p>Recompile and run the program. You will see your text has changed to reflect the rust code.</p>
@@ -203,17 +203,17 @@
 <span class="boring">}
 </span></code></pre></pre>
 <p>Now let's change our rust code to spawn some scenes.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             // Spawning new ui nodes inside our main scene
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.get(&quot;cell::text&quot;).update_text(i.to_string());
                 });
             }
@@ -244,16 +244,16 @@
 <span class="boring">}
 </span></code></pre></pre>
 <p>Now we can use <code>on_pressed</code>:</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
                         loaded_scene.update_text(i.to_string());
                         loaded_scene.on_pressed(move|/* We can write arbitrary bevy parameters here*/|{

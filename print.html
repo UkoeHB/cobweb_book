@@ -155,6 +155,7 @@
 <p>let's make an empty project to test it out:</p>
 <pre><code>cargo new cobweb_test
 cd cobweb_test
+cargo add bevy
 </code></pre>
 <p>This book won't be making any distinction between <code>bevy_cobweb</code> and <code>bevy_cobweb_ui</code>. <code>bevy_cobweb</code> is a reactivity library that <code>bevy_cobweb_ui</code> uses for convenience methods like <code>.on_pressed</code>.</p>
 <pre><code>cargo add bevy_cobweb
@@ -171,16 +172,14 @@ use bevy_cobweb_ui::prelude::*;
 
 //-------------------------------------------------------------------------------------------------------------------
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;)
-{
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
-    c.ui_root().load_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
+    c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 
-fn main()
-{
+fn main() {
     App::new()
         .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
@@ -202,7 +201,7 @@ fn main()
 <p>When all the cob files are loaded this will call our UI setup system:
 <code>.add_systems(OnEnter(LoadState::Done), build_ui)</code></p>
 <p>This makes a new UI hierarchy with its own root node:
-<code>c.ui_root().load_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);</code></p>
+<code>c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);</code></p>
 <h2 id="cob-code"><a class="header" href="#cob-code">COB code</a></h2>
 <p>Create a new folder called <code>assets</code>.</p>
 <p>Create a new file called <code>main.cob</code>.</p>
@@ -402,17 +401,17 @@ When you read the documentation of each loadable hopefully you will be able to e
 <h2 id="rust"><a class="header" href="#rust">Rust</a></h2>
 <h3 id="updating-text-at-runtime"><a class="header" href="#updating-text-at-runtime">Updating text at runtime</a></h3>
 <p>Let's change the rust code to be as below.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s:ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
         });
 }
 </code></pre>
-<p>We have changed <code>load_scene</code> to be <code>load_scene_and_edit</code>.</p>
+<p>We have changed <code>spawn_scene</code> to be <code>spawn_scene_and_edit</code>.</p>
 <p>When we load <code>&quot;main_scene&quot;</code> in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>loaded_scene</code> similar to commands along with extension methods provided by cobweb.</p>
 <p>Inside the closure we call <code>get(cell::text)</code> which is basically a path syntax to go straight to the text node. It also possible to call <code>edit</code> on <code>&quot;cell&quot;</code> then call <code>update_text</code> inside the resulting closure.</p>
 <p>Recompile and run the program. You will see your text has changed to reflect the rust code.</p>
@@ -443,17 +442,17 @@ When you read the documentation of each loadable hopefully you will be able to e
 <span class="boring">}
 </span></code></pre></pre>
 <p>Now let's change our rust code to spawn some scenes.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             // Spawning new ui nodes inside our main scene
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.get(&quot;cell::text&quot;).update_text(i.to_string());
                 });
             }
@@ -484,16 +483,16 @@ When you read the documentation of each loadable hopefully you will be able to e
 <span class="boring">}
 </span></code></pre></pre>
 <p>Now we can use <code>on_pressed</code>:</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
                         loaded_scene.update_text(i.to_string());
                         loaded_scene.on_pressed(move|/* We can write arbitrary bevy parameters here*/|{
@@ -523,16 +522,16 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
                         loaded_scene.update_text(i.to_string());
                         loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -603,17 +602,17 @@ fn main() {
 <pre><code class="language-rs">#[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene.insert(MainInterface); // &lt;-- add the marker component
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
                         loaded_scene.update_text(i.to_string());
                         loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -634,17 +633,17 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene.insert(MainInterface);
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
                         loaded_scene.update_text(i.to_string());
                         loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -655,7 +654,7 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
             }
 
             // NEW: despawn button
-            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
                 // Despawn the main interface on press.
                 // Notice this looks like a normal bevy query.
                 loaded_scene.on_pressed(
@@ -683,17 +682,17 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene.insert(MainInterface);
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
                         loaded_scene.update_text(i.to_string());
                         loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -702,7 +701,7 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
                     });
                 });
             }
-            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
                 loaded_scene.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -716,7 +715,7 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
             });
 
             // NEW: exit button
-            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
+            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
                 loaded_scene.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
@@ -730,15 +729,15 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
 </code></pre>
 <h3 id="spawn-new-interface"><a class="header" href="#spawn-new-interface">Spawn new interface</a></h3>
 <p>Let's add a system for making respawn buttons. The respawn button will spawn the main interface.</p>
-<pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+<pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
             //TODO respawning main interface
         });
 }
 </code></pre>
 <p>Now call it on despawn</p>
-<pre><code class="language-rs">            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+<pre><code class="language-rs">            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
                 loaded_scene.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -768,16 +767,16 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             loaded_scene.insert(MainInterface);
             loaded_scene
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
+                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
                     loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
                         loaded_scene.update_text(i.to_string());
                         loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -786,7 +785,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
                     });
                 });
             }
-            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
                 loaded_scene.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -799,7 +798,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
                     },
                 );
             });
-            loaded_scene.load_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
+            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
                 loaded_scene.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
@@ -813,8 +812,8 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
 
 fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
-            let entity = loaded_scene.id();
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
+            let entity = spawn_scene.id();
             loaded_scene.on_pressed(move |mut commands: Commands| {
                 commands.get_entity(entity).result()?.despawn_recursive();
                 commands.run_system_cached(spawn_main_interface);
@@ -862,9 +861,9 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.ui_root()
-        .load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
             // &lt;-- We no longer have insert here
             loaded_scene
                 .get(&quot;cell::text&quot;)
@@ -874,7 +873,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     // ...
 }
 
