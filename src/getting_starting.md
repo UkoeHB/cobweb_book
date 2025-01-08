@@ -8,6 +8,7 @@ let's make an empty project to test it out:
 ```
 cargo new cobweb_test
 cd cobweb_test
+cargo add bevy
 ```
 
 This book won't be making any distinction between `bevy_cobweb` and `bevy_cobweb_ui`. `bevy_cobweb` is a reactivity library that `bevy_cobweb_ui` uses for convenience methods like `.on_pressed`.
@@ -37,16 +38,14 @@ use bevy_cobweb_ui::prelude::*;
 
 //-------------------------------------------------------------------------------------------------------------------
 
-fn build_ui(mut c: Commands, mut s: ResMut<SceneLoader>)
-{
+fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
     c.spawn(Camera2d);
-    c.ui_root().load_scene(("main.cob", "main_scene"), &mut s);
+    c.ui_root().spawn_scene(("main.cob", "main_scene"), &mut s);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 
-fn main()
-{
+fn main() {
     App::new()
         .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
@@ -72,7 +71,7 @@ When all the cob files are loaded this will call our UI setup system:
 `.add_systems(OnEnter(LoadState::Done), build_ui)`
 
 This makes a new UI hierarchy with its own root node:
-`c.ui_root().load_scene(("main.cob", "main_scene"), &mut s);`
+`c.ui_root().spawn_scene(("main.cob", "main_scene"), &mut s);`
 
 
 ## COB code
