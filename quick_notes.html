@@ -154,7 +154,7 @@
 <h3 id="cobweb-has-reactive-features"><a class="header" href="#cobweb-has-reactive-features">Cobweb has reactive features.</a></h3>
 <p>Some examples can be found <a href="https://github.com/UkoeHB/bevy_cobweb_ui/tree/main/examples">here</a>.</p>
 <p>You can use broadcasts to refresh your ui, <code>update_on(broadcast::&lt;MyArbitaryStruct&gt;(),|/*bevy query*/|{});</code>
-Call it using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
+Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
 <p>There are others as well.</p>
 <h3 id="other-features"><a class="header" href="#other-features">Other features</a></h3>
 <ul>

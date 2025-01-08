@@ -155,16 +155,16 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
-            loaded_scene
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
-                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
-                        loaded_scene.update_text(i.to_string());
-                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                    scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
+                        scene_handle.update_text(i.to_string());
+                        scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
                             println!(&quot;You clicked {}&quot;, i);
                         });
                     });
@@ -235,17 +235,17 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
-            loaded_scene.insert(MainInterface); // &lt;-- add the marker component
-            loaded_scene
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            scene_handle.insert(MainInterface); // &lt;-- add the marker component
+            scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
-                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
-                        loaded_scene.update_text(i.to_string());
-                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                    scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
+                        scene_handle.update_text(i.to_string());
+                        scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
                             println!(&quot;You clicked {}&quot;, i);
                         });
                     });
@@ -266,17 +266,17 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
-            loaded_scene.insert(MainInterface);
-            loaded_scene
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            scene_handle.insert(MainInterface);
+            scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
-                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
-                        loaded_scene.update_text(i.to_string());
-                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                    scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
+                        scene_handle.update_text(i.to_string());
+                        scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
                             println!(&quot;You clicked {}&quot;,i);
                         });
                     });
@@ -284,10 +284,10 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
             }
 
             // NEW: despawn button
-            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
+            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 // Despawn the main interface on press.
                 // Notice this looks like a normal bevy query.
-                loaded_scene.on_pressed(
+                scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
                         // Cobweb callbacks can use `?` if you return `OK` or `DONE`.
@@ -315,24 +315,24 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
-            loaded_scene.insert(MainInterface);
-            loaded_scene
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            scene_handle.insert(MainInterface);
+            scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
-                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
-                        loaded_scene.update_text(i.to_string());
-                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                    scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
+                        scene_handle.update_text(i.to_string());
+                        scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
                             println!(&quot;You clicked {}&quot;, i);
                         });
                     });
                 });
             }
-            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
-                loaded_scene.on_pressed(
+            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+                scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
                         commands
@@ -345,8 +345,8 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
             });
 
             // NEW: exit button
-            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
-                loaded_scene.on_pressed(
+            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
+                scene_handle.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
                         commands.get_entity(window).result()?.despawn();
@@ -361,14 +361,14 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
 <p>Let's add a system for making respawn buttons. The respawn button will spawn the main interface.</p>
 <pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             //TODO respawning main interface
         });
 }
 </code></pre>
 <p>Now call it on despawn</p>
-<pre><code class="language-rs">            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
-                loaded_scene.on_pressed(
+<pre><code class="language-rs">            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+                scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
                         commands
@@ -399,24 +399,24 @@ fn build_ui(mut c: Commands) {
 
 fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
-            loaded_scene.insert(MainInterface);
-            loaded_scene
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            scene_handle.insert(MainInterface);
+            scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |loaded_scene| {
-                    loaded_scene.edit(&quot;cell::text&quot;, |loaded_scene| {
-                        loaded_scene.update_text(i.to_string());
-                        loaded_scene.on_pressed(move|/* We write arbitary bevy parameters here*/|{
+                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                    scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
+                        scene_handle.update_text(i.to_string());
+                        scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
                             println!(&quot;You clicked {}&quot;,i);
                         });
                     });
                 });
             }
-            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |loaded_scene| {
-                loaded_scene.on_pressed(
+            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+                scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
                         commands
@@ -428,8 +428,8 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
                     },
                 );
             });
-            loaded_scene.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |loaded_scene| {
-                loaded_scene.on_pressed(
+            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
+                scene_handle.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
                         commands.get_entity(window).result()?.despawn();
@@ -440,11 +440,11 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneLoader&gt;) {
+fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             let entity = spawn_scene.id();
-            loaded_scene.on_pressed(move |mut commands: Commands| {
+            scene_handle.on_pressed(move |mut commands: Commands| {
                 commands.get_entity(entity).result()?.despawn_recursive();
                 commands.run_system_cached(spawn_main_interface);
                 OK
@@ -493,9 +493,9 @@ fn build_ui(mut c: Commands) {
 
 fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |loaded_scene| {
+        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             // &lt;-- We no longer have insert here
-            loaded_scene
+            scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 

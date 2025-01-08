@@ -178,6 +178,7 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
     TextLineColor($text_colour) // &lt;-- now uses a constant
     Interactive
 </code></pre>
+<p>Defs also include scene macros. TODO</p>
 <h2 id="manifest-and-import"><a class="header" href="#manifest-and-import">#manifest and #import</a></h2>
 <p>You can further extend this over many files using <code>#manifest</code> and <code>#import</code> sections.</p>
 <h3 id="manifest"><a class="header" href="#manifest">#manifest</a></h3>
@@ -188,7 +189,7 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
 &quot;ui/colour_scheme.cob&quot; as cs
 </code></pre>
 <p>The <code>as main</code> defines a manifest key for the file <code>main.cob</code>.</p>
-<p>Now replace the <code>.load(&quot;main.cob&quot;)</code> in your app with <code>.load(&quot;manifest.cob&quot;)</code>. You can also simplify <code>.load_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), ...)</code> to <code>.load_scene_and_edit((&quot;main&quot;, &quot;main_scene&quot;), ...)</code>, using the main file's manifest key.</p>
+<p>Now replace the <code>.load(&quot;main.cob&quot;)</code> in your app with <code>.load(&quot;manifest.cob&quot;)</code>. You can also simplify <code>.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), ...)</code> to <code>.spawn_scene_and_edit((&quot;main&quot;, &quot;main_scene&quot;), ...)</code>, using the main file's manifest key.</p>
 <h3 id="import"><a class="header" href="#import">#import</a></h3>
 <p>Imports let you bring in <code>#defs</code> from other files.</p>
 <p>In any file where you want to import defs you can do as below.</p>
