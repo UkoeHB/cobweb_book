@@ -34,7 +34,7 @@ If your UI comes up in response to player actions on other UI, then calling it u
 Some examples can be found [here](https://github.com/UkoeHB/bevy_cobweb_ui/tree/main/examples).
 
 You can use broadcasts to refresh your ui, `update_on(broadcast::<MyArbitaryStruct>(),|/*bevy query*/|{});`
-Call it using `commands.react().broadcast(MyArbitaryStruct)`.
+Send the event using `commands.react().broadcast(MyArbitaryStruct)`.
 
 There are others as well.
 

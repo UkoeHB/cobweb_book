@@ -48,6 +48,8 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
     Interactive
 ```
 
+Defs also include scene macros. TODO
+
 ## #manifest and #import
 
 You can further extend this over many files using `#manifest` and `#import` sections.
@@ -66,7 +68,7 @@ Make a central manifest file at `assets/manifest.cob`:
 
 The `as main` defines a manifest key for the file `main.cob`.
 
-Now replace the `.load("main.cob")` in your app with `.load("manifest.cob")`. You can also simplify `.load_scene_and_edit(("main.cob", "main_scene"), ...)` to `.load_scene_and_edit(("main", "main_scene"), ...)`, using the main file's manifest key.
+Now replace the `.load("main.cob")` in your app with `.load("manifest.cob")`. You can also simplify `.spawn_scene_and_edit(("main.cob", "main_scene"), ...)` to `.spawn_scene_and_edit(("main", "main_scene"), ...)`, using the main file's manifest key.
 
 ### #import
 

@@ -6,7 +6,7 @@ To start off let's add hovering changing background colours based on user hoveri
 
 ## Hovering and pressing
 
-```
+```rust
 #scenes
 "scene"
     AbsoluteNode{left:40% }

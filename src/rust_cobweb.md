@@ -36,11 +36,11 @@ It just turns out to be easier to position nodes than it is to position text.
 Let's change the rust code to be as below.
 
 ```rs
-fn build_ui(mut c: Commands, mut s:ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |loaded_scene| {
-            loaded_scene
+        .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
+            scene_handle
                 .get("cell::text")
                 .update_text("My runtime text");
         });
@@ -49,7 +49,7 @@ fn build_ui(mut c: Commands, mut s:ResMut<SceneBuilder>) {
 
 We have changed `spawn_scene` to be `spawn_scene_and_edit`.
 
-When we load `"main_scene"` in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use `loaded_scene` similar to commands along with extension methods provided by cobweb.
+When we load `"main_scene"` in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use `scene_handle` similar to commands along with extension methods provided by cobweb.
 
 Inside the closure we call `get(cell::text)` which is basically a path syntax to go straight to the text node. It also possible to call `edit` on `"cell"` then call `update_text` inside the resulting closure.
 
@@ -90,15 +90,15 @@ Now let's change our rust code to spawn some scenes.
 fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |loaded_scene| {
-            loaded_scene
+        .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
+            scene_handle
                 .get("cell::text")
                 .update_text("My runtime text");
 
             // Spawning new ui nodes inside our main scene
             for i in (0..=10).into_iter() {
-                loaded_scene.spawn_scene_and_edit(("main.cob", "number_text"), |loaded_scene| {
-                    loaded_scene.get("cell::text").update_text(i.to_string());
+                scene_handle.spawn_scene_and_edit(("main.cob", "number_text"), |scene_handle| {
+                    scene_handle.get("cell::text").update_text(i.to_string());
                 });
             }
         });
@@ -135,16 +135,16 @@ Now we can use `on_pressed`:
 fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |loaded_scene| {
-            loaded_scene
+        .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
+            scene_handle
                 .get("cell::text")
                 .update_text("My runtime text");
 
             for i in (0..=10).into_iter() {
-                loaded_scene.spawn_scene_and_edit(("main.cob", "number_text"), |loaded_scene| {
-                    loaded_scene.edit("cell::text", |loaded_scene| {
-                        loaded_scene.update_text(i.to_string());
-                        loaded_scene.on_pressed(move|/* We can write arbitrary bevy parameters here*/|{
+                scene_handle.spawn_scene_and_edit(("main.cob", "number_text"), |scene_handle| {
+                    scene_handle.edit("cell::text", |scene_handle| {
+                        scene_handle.update_text(i.to_string());
+                        scene_handle.on_pressed(move|/* We can write arbitrary bevy parameters here*/|{
                             println!("You clicked {}", i);
                         });
                     });
