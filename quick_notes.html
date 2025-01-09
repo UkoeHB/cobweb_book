@@ -166,7 +166,9 @@ Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.<
 <h2 id="cob-documentation"><a class="header" href="#cob-documentation">Cob documentation.</a></h2>
 <p>You can find more details about cob files <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/index.html">here</a>.</p>
 <h2 id="pulling-existing-node-to-edit"><a class="header" href="#pulling-existing-node-to-edit">Pulling existing node to edit</a></h2>
-<p>For creating nodes from scratch we used <code>commands.ui_builder(UiRoot)</code> (or <code>commands.ui_root()</code>). If we want to modify an existing UI node, substitue <code>UiRoot</code> with the entity you want to edit. If you use <code>commands.get</code> you can end up with this error:</p>
+<p>For creating nodes from scratch we used <code>commands.ui_builder(UiRoot)</code> (or <code>commands.ui_root()</code>). To modify an existing UI node, we can use the <code>ui_builder</code> extension with the entity that will be the parent of the newly-spawned scene:
+<code>commands.ui_builder(parent_entity).spawn_scene(..)</code>.</p>
+<p>If you use <code>commands.get</code> you can end up with this error:</p>
 <p><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken. at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
 
                     </main>
