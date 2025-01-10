@@ -1,8 +1,5 @@
 # Errors
 
-## Forgetting to add Interactive to nodes
-If your node defined in the cob file has to be interacted with (e.g. with `.on_pressed()`), make sure you put in `Interactive`.
-
 ## Odd lifetime errors, usually about static lifetimes
 If you capture data in closures like `.on_pressed()`, make sure you use move and clone anything you need.
 

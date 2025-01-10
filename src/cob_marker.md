@@ -20,7 +20,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
@@ -80,18 +80,14 @@ And here is the cob file we've built, adding in some small button scenes:
         "text"
             TextLine{text:"placeholder"}
             TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive
 
 
 "exit_button"
     TextLine{text:"Exit"}
-    Interactive
 "despawn_button"
     TextLine{text:"Despawn"}
-    Interactive
 "respawn_button"
     TextLine{text:"Respawn"}
-    Interactive
 ```
 
 The exit and despawn buttons could just as easily be added as children of `main_scene`.
@@ -104,7 +100,7 @@ Let's look at the first way of doing this using what is likely to be a more fami
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
@@ -137,7 +133,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
@@ -189,7 +185,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
@@ -240,7 +236,7 @@ fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
 Let's add a system for making respawn buttons. The respawn button will spawn the main interface.
 
 ```rs
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "respawn_button"), &mut s, |scene_handle| {
             //TODO respawning main interface
@@ -286,7 +282,7 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
@@ -329,7 +325,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut<SceneBuilder>) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "respawn_button"), &mut s, |scene_handle| {
             let entity = spawn_scene.id();
@@ -389,7 +385,7 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
             // <-- We no longer have insert here
@@ -401,7 +397,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut<SceneBuilder>) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     // ...
 }
 
@@ -447,18 +443,14 @@ Let's now add `MainInterface` to our cob file.
         "text"
             TextLine{text:"placeholder"}
             TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive
 
 
 "exit_button"
     TextLine{text:"Exit"}
-    Interactive
 "despawn_button"
     TextLine{text:"Despawn"}
-    Interactive
 "respawn_button"
     TextLine{text:"Respawn"}
-    Interactive
 ```
 
 We are now done.

@@ -33,7 +33,7 @@ If your UI comes up in response to player actions on other UI, then calling it u
 ### Cobweb has reactive features.
 Some examples can be found [here](https://github.com/UkoeHB/bevy_cobweb_ui/tree/main/examples).
 
-You can use broadcasts to refresh your ui, `update_on(broadcast::<MyArbitaryStruct>(),|/*bevy query*/|{});`
+You can use broadcasts to refresh your ui, `.reactor(broadcast::<MyArbitaryStruct>(), |/*bevy query*/| { });`
 Send the event using `commands.react().broadcast(MyArbitaryStruct)`.
 
 There are others as well.

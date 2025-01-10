@@ -31,21 +31,17 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
         "text"
             TextLine{text:"placeholder"}
             TextLineColor($text_colour) // <-- now uses a constant
-            Interactive
 
 
 "exit_button"
     TextLine{text:"Exit"}
     TextLineColor($text_colour) // <-- now uses a constant
-    Interactive
 "despawn_button"
     TextLine{text:"Despawn"}
     TextLineColor($text_colour) // <-- now uses a constant
-    Interactive
 "respawn_button"
     TextLine{text:"Respawn"}
     TextLineColor($text_colour) // <-- now uses a constant
-    Interactive
 ```
 
 Defs also include scene macros. TODO

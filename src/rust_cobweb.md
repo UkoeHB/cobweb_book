@@ -36,7 +36,7 @@ It just turns out to be easier to position nodes than it is to position text.
 Let's change the rust code to be as below.
 
 ```rs
-fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
@@ -87,7 +87,7 @@ If the concept of scenes was a bit confusing before, this should clarify it a bi
 Now let's change our rust code to spawn some scenes.
 
 ```rs
-fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
@@ -117,22 +117,10 @@ We now have some numbers that appear based on your code. We can still modify the
 
 #### Making nodes interactive
 
-Setting our UI to react to the user is essential, and easy. First we need to add the `Interactive` loadable.
-
-```rust
-"number_text"
-    "cell"
-        "text"
-            TextLine{text:"placeholder"}
-            TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive // Sets up the node for user interaction
-
-```
-
-Now we can use `on_pressed`:
+Setting our UI to react to the user is essential, and easy. Here we add `on_pressed` for our `"number_text"` node:
 
 ```rs
-fn build_ui(mut c: Commands, mut s: ResMut<SceneBuilder>) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "main_scene"), &mut s, |scene_handle| {
