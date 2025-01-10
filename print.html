@@ -172,7 +172,7 @@ use bevy_cobweb_ui::prelude::*;
 
 //-------------------------------------------------------------------------------------------------------------------
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
 }
@@ -401,7 +401,7 @@ When you read the documentation of each loadable hopefully you will be able to e
 <h2 id="rust"><a class="header" href="#rust">Rust</a></h2>
 <h3 id="updating-text-at-runtime"><a class="header" href="#updating-text-at-runtime">Updating text at runtime</a></h3>
 <p>Let's change the rust code to be as below.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -442,7 +442,7 @@ When you read the documentation of each loadable hopefully you will be able to e
 <span class="boring">}
 </span></code></pre></pre>
 <p>Now let's change our rust code to spawn some scenes.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -470,20 +470,8 @@ When you read the documentation of each loadable hopefully you will be able to e
 <span class="boring">}
 </span></code></pre></pre>
 <h4 id="making-nodes-interactive"><a class="header" href="#making-nodes-interactive">Making nodes interactive</a></h4>
-<p>Setting our UI to react to the user is essential, and easy. First we need to add the <code>Interactive</code> loadable.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>&quot;number_text&quot;
-    &quot;cell&quot;
-        &quot;text&quot;
-            TextLine{text:&quot;placeholder&quot;}
-            TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive // Sets up the node for user interaction
-
-<span class="boring">}
-</span></code></pre></pre>
-<p>Now we can use <code>on_pressed</code>:</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<p>Setting our UI to react to the user is essential, and easy. Here we add <code>on_pressed</code> for our <code>&quot;number_text&quot;</code> node:</p>
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -522,7 +510,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -582,18 +570,14 @@ fn main() {
         &quot;text&quot;
             TextLine{text:&quot;placeholder&quot;}
             TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive
 
 
 &quot;exit_button&quot;
     TextLine{text:&quot;Exit&quot;}
-    Interactive
 &quot;despawn_button&quot;
     TextLine{text:&quot;Despawn&quot;}
-    Interactive
 &quot;respawn_button&quot;
     TextLine{text:&quot;Respawn&quot;}
-    Interactive
 <span class="boring">}
 </span></code></pre></pre>
 <p>The exit and despawn buttons could just as easily be added as children of <code>main_scene</code>.</p>
@@ -602,7 +586,7 @@ fn main() {
 <pre><code class="language-rs">#[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -633,7 +617,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -682,7 +666,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -729,7 +713,7 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
 </code></pre>
 <h3 id="spawn-new-interface"><a class="header" href="#spawn-new-interface">Spawn new interface</a></h3>
 <p>Let's add a system for making respawn buttons. The respawn button will spawn the main interface.</p>
-<pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             //TODO respawning main interface
@@ -767,7 +751,7 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
@@ -810,7 +794,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             let entity = spawn_scene.id();
@@ -861,7 +845,7 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             // &lt;-- We no longer have insert here
@@ -873,7 +857,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     // ...
 }
 
@@ -916,18 +900,14 @@ fn main() {
         &quot;text&quot;
             TextLine{text:&quot;placeholder&quot;}
             TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive
 
 
 &quot;exit_button&quot;
     TextLine{text:&quot;Exit&quot;}
-    Interactive
 &quot;despawn_button&quot;
     TextLine{text:&quot;Despawn&quot;}
-    Interactive
 &quot;respawn_button&quot;
     TextLine{text:&quot;Respawn&quot;}
-    Interactive
 </code></pre>
 <p>We are now done.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cob-file-organization"><a class="header" href="#cob-file-organization">Cob file organization</a></h1>
@@ -958,21 +938,17 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
         &quot;text&quot;
             TextLine{text:&quot;placeholder&quot;}
             TextLineColor($text_colour) // &lt;-- now uses a constant
-            Interactive
 
 
 &quot;exit_button&quot;
     TextLine{text:&quot;Exit&quot;}
     TextLineColor($text_colour) // &lt;-- now uses a constant
-    Interactive
 &quot;despawn_button&quot;
     TextLine{text:&quot;Despawn&quot;}
     TextLineColor($text_colour) // &lt;-- now uses a constant
-    Interactive
 &quot;respawn_button&quot;
     TextLine{text:&quot;Respawn&quot;}
     TextLineColor($text_colour) // &lt;-- now uses a constant
-    Interactive
 </code></pre>
 <p>Defs also include scene macros. TODO</p>
 <h2 id="manifest-and-import"><a class="header" href="#manifest-and-import">#manifest and #import</a></h2>
@@ -1014,7 +990,7 @@ cs as colours
 <h2 id="other-features-not-covered-at-least-for-now"><a class="header" href="#other-features-not-covered-at-least-for-now">Other features not covered (at least for now!)</a></h2>
 <h3 id="cobweb-has-reactive-features"><a class="header" href="#cobweb-has-reactive-features">Cobweb has reactive features.</a></h3>
 <p>Some examples can be found <a href="https://github.com/UkoeHB/bevy_cobweb_ui/tree/main/examples">here</a>.</p>
-<p>You can use broadcasts to refresh your ui, <code>update_on(broadcast::&lt;MyArbitaryStruct&gt;(),|/*bevy query*/|{});</code>
+<p>You can use broadcasts to refresh your ui, <code>.reactor(broadcast::&lt;MyArbitaryStruct&gt;(), |/*bevy query*/| { });</code>
 Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.</p>
 <p>There are others as well.</p>
 <h3 id="other-features"><a class="header" href="#other-features">Other features</a></h3>
@@ -1032,8 +1008,6 @@ Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.<
 <p>If you use <code>commands.get</code> you can end up with this error:</p>
 <p><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken. at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
-<h2 id="forgetting-to-add-interactive-to-nodes"><a class="header" href="#forgetting-to-add-interactive-to-nodes">Forgetting to add Interactive to nodes</a></h2>
-<p>If your node defined in the cob file has to be interacted with (e.g. with <code>.on_pressed()</code>), make sure you put in <code>Interactive</code>.</p>
 <h2 id="odd-lifetime-errors-usually-about-static-lifetimes"><a class="header" href="#odd-lifetime-errors-usually-about-static-lifetimes">Odd lifetime errors, usually about static lifetimes</a></h2>
 <p>If you capture data in closures like <code>.on_pressed()</code>, make sure you use move and clone anything you need.</p>
 <h2 id="trying-to-load-non-top-level-scenes"><a class="header" href="#trying-to-load-non-top-level-scenes">Trying to load non-top-level scenes</a></h2>

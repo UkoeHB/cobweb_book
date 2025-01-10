@@ -162,7 +162,7 @@
 <h2 id="rust"><a class="header" href="#rust">Rust</a></h2>
 <h3 id="updating-text-at-runtime"><a class="header" href="#updating-text-at-runtime">Updating text at runtime</a></h3>
 <p>Let's change the rust code to be as below.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -203,7 +203,7 @@
 <span class="boring">}
 </span></code></pre></pre>
 <p>Now let's change our rust code to spawn some scenes.</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -231,20 +231,8 @@
 <span class="boring">}
 </span></code></pre></pre>
 <h4 id="making-nodes-interactive"><a class="header" href="#making-nodes-interactive">Making nodes interactive</a></h4>
-<p>Setting our UI to react to the user is essential, and easy. First we need to add the <code>Interactive</code> loadable.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>&quot;number_text&quot;
-    &quot;cell&quot;
-        &quot;text&quot;
-            TextLine{text:&quot;placeholder&quot;}
-            TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive // Sets up the node for user interaction
-
-<span class="boring">}
-</span></code></pre></pre>
-<p>Now we can use <code>on_pressed</code>:</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<p>Setting our UI to react to the user is essential, and easy. Here we add <code>on_pressed</code> for our <code>&quot;number_text&quot;</code> node:</p>
+<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {

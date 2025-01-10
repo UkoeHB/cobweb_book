@@ -152,7 +152,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -212,18 +212,14 @@ fn main() {
         &quot;text&quot;
             TextLine{text:&quot;placeholder&quot;}
             TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive
 
 
 &quot;exit_button&quot;
     TextLine{text:&quot;Exit&quot;}
-    Interactive
 &quot;despawn_button&quot;
     TextLine{text:&quot;Despawn&quot;}
-    Interactive
 &quot;respawn_button&quot;
     TextLine{text:&quot;Respawn&quot;}
-    Interactive
 <span class="boring">}
 </span></code></pre></pre>
 <p>The exit and despawn buttons could just as easily be added as children of <code>main_scene</code>.</p>
@@ -232,7 +228,7 @@ fn main() {
 <pre><code class="language-rs">#[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -263,7 +259,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -312,7 +308,7 @@ use bevy_cobweb_ui::prelude::*;
 #[derive(Component)]
 struct MainInterface;
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
@@ -359,7 +355,7 @@ fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
 </code></pre>
 <h3 id="spawn-new-interface"><a class="header" href="#spawn-new-interface">Spawn new interface</a></h3>
 <p>Let's add a system for making respawn buttons. The respawn button will spawn the main interface.</p>
-<pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+<pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             //TODO respawning main interface
@@ -397,7 +393,7 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
@@ -440,7 +436,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             let entity = spawn_scene.id();
@@ -491,7 +487,7 @@ fn build_ui(mut c: Commands) {
     c.run_system_cached(spawn_main_interface);
 }
 
-fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             // &lt;-- We no longer have insert here
@@ -503,7 +499,7 @@ fn spawn_main_interface(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
         });
 }
 
-fn spawn_respawn_button(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     // ...
 }
 
@@ -546,18 +542,14 @@ fn main() {
         &quot;text&quot;
             TextLine{text:&quot;placeholder&quot;}
             TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0})
-            Interactive
 
 
 &quot;exit_button&quot;
     TextLine{text:&quot;Exit&quot;}
-    Interactive
 &quot;despawn_button&quot;
     TextLine{text:&quot;Despawn&quot;}
-    Interactive
 &quot;respawn_button&quot;
     TextLine{text:&quot;Respawn&quot;}
-    Interactive
 </code></pre>
 <p>We are now done.</p>
 

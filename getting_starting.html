@@ -156,7 +156,7 @@ use bevy_cobweb_ui::prelude::*;
 
 //-------------------------------------------------------------------------------------------------------------------
 
-fn build_ui(mut c: Commands, mut s: ResMut&lt;SceneBuilder&gt;) {
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
 }
