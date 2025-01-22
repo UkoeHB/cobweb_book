@@ -80,7 +80,7 @@ Create a new folder called `assets`.
 Create a new file called `main.cob`.
 
 Add in the following:
-```rust
+```
 #scenes
 "main_scene"
     TextLine{ text: "Hello, World!" }
