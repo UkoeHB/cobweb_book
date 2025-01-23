@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">8.</strong> Errors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1004,6 +1004,124 @@ Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.<
 <code>commands.ui_builder(parent_entity).spawn_scene_simple(..)</code>.</p>
 <p>If you use <code>commands.get</code> you can end up with this error:</p>
 <p><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken. at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tabs-wip"><a class="header" href="#tabs-wip">Tabs (WIP)</a></h1>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<ul>
+<li>Create a window with tabs that can be selected from</li>
+<li>Learn about radio buttons</li>
+<li>Learn about controlRoot and ControlMembers for transferring state</li>
+</ul>
+<h2 id="method"><a class="header" href="#method">Method</a></h2>
+<p>Tabs are pretty much radio buttons, so we will be using these to implement them in cobweb_ui.
+We will start with a basic window that should approximate what this book has taught so far.</p>
+<h3 id="starting-rust-code"><a class="header" href="#starting-rust-code">Starting rust code.</a></h3>
+<p>Hopefully this is familiar from previous chapters.</p>
+<pre><code class="language-rs">
+use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {});
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn main() {
+    App::new()
+        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                window_theme: Some(bevy::window::WindowTheme::Dark),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(CobwebUiPlugin)
+        .load(&quot;main.cob&quot;)
+        .add_systems(OnEnter(LoadState::Done), build_ui)
+        .run();
+}
+</code></pre>
+<h3 id="starting-cob-file"><a class="header" href="#starting-cob-file">Starting COB file</a></h3>
+<p><code>GridNode</code> and <code>AbsoluteGridNode</code> are used to create an orderly scaled layout.</p>
+<p><code>FlexNode</code> is used to center the text on some titles.</p>
+<p>Note we can do some abstractions to tidy up the code, we will stick to simplicity at the expense of verbosity.
+Once we have the functionality sorted we look at some abstractions.</p>
+<p>Hopefully this code is also mostly familiar from previous chapters.</p>
+<pre><code>#scenes
+&quot;main_scene&quot;
+    AbsoluteGridNode{left:30% width:40vw min_height:30vh   }
+    BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 })
+    &quot;title&quot;
+        FlexNode{justify_main:Center}
+        &quot;text&quot;
+            TextLine{ text: &quot;Tabs education&quot;}
+            TextLineColor(Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 })
+
+    //Actual tab menu
+    &quot;tab_menu&quot;
+        GridNode{grid_auto_flow:Column}
+        &quot;info&quot;
+            FlexNode{justify_main:Center}
+            &quot;text&quot;
+                TextLine{ text: &quot;Info&quot; }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+            
+        &quot;exit&quot;
+            FlexNode{justify_main:Center}
+            &quot;text&quot;
+                TextLine{ text: &quot;Exit button&quot;}
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+
+    //This is what changes based on menu selection
+    &quot;tab_content&quot;
+        GridNode{ height:25vh }
+        BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 })
+
+    &quot;footer_content&quot;
+            FlexNode{justify_main:Center}
+            &quot;text&quot;
+                TextLine{ text: &quot;I don't change&quot; }
+                TextLineColor(Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0})
+        
+
+
+//tab content that will be spawned at runtime
+
+&quot;info_tab&quot;
+    FlexNode{justify_main:Center}
+    TextLine{text:&quot;You are in the info tab&quot;}
+
+&quot;exit_tab&quot;
+    //Not implemented
+    FlexNode{justify_main:Center}
+    TextLine{text:&quot;Click me to quit&quot;}
+</code></pre>
+<h3 id="filling-in-tab_content"><a class="header" href="#filling-in-tab_content">Filling in tab_content</a></h3>
+<p>Let's run this and see our ui.</p>
+<ul>
+<li>Our starting code has an empty lightly coloured square box where our tab content should go.</li>
+<li>Two buttons are above the square box these will be our tab menus.</li>
+<li>A title and footer they are there to serve as normal constant values regardless of tab.</li>
+</ul>
+<p>First thing to do now is spawn <code>info_tab</code> when <code>info</code> is clicked.</p>
+<pre><code class="language-rs">    //Snip
+    c.ui_root()
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            //Get entity to place in our scene
+            let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
+            scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
+                });
+            });
+        });
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
 <h2 id="odd-lifetime-errors-usually-about-static-lifetimes"><a class="header" href="#odd-lifetime-errors-usually-about-static-lifetimes">Odd lifetime errors, usually about static lifetimes</a></h2>
 <p>If you capture data in closures like <code>.on_pressed()</code>, make sure you use move and clone anything you need.</p>

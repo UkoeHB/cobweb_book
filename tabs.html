@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Cob files - cobweb book</title>
+        <title>Tabs - cobweb book</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html" class="active"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded "><a href="tabs.html" class="active"><strong aria-hidden="true">8.</strong> Tabs</a></li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,81 +134,133 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="cob-files"><a class="header" href="#cob-files">Cob files</a></h1>
-<p>Cob allows you to separate your UI from your code, in addition to enabling hot reloading of changes. Cob is whitespace-sensitive.</p>
-<h2 id="sections"><a class="header" href="#sections">Sections</a></h2>
-<p>Cob files are made up of sections. For now, we will explore one type of section.</p>
-<h3 id="scenes"><a class="header" href="#scenes">Scenes</a></h3>
-<p>Scenes are declared following the <code>#scenes</code> keyword. Scenes are given a name. In our example, we use <code>&quot;main_scene&quot;</code>... extremely creative. We use scene root nodes to load scenes Cobweb. We will need to recompile to add new scenes to our app.</p>
-<h4 id="extending-our-example"><a class="header" href="#extending-our-example">Extending our example.</a></h4>
-<p>First, rerun the program if you have closed it.  We want to see the hot reloading in action.</p>
-<p>Let's change our cob file to be something like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
-    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
-<span class="boring">}
-</span></code></pre></pre>
-<h4 id="loadables"><a class="header" href="#loadables">Loadables</a></h4>
-<p>Loadables are Rust types that can be added to the scene nodes. For now, we will only explore one type of loadable:</p>
-<p>Types that implement the <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/trait.Instruction.html">instruction trait</a>.</p>
-<p><code>TextLine</code> is an example of a loadable.</p>
-<p><em>Loadables should not have space between their name and the opening <code>{</code>.</em></p>
-<p>let's add another called <code>AbsoluteNode</code>:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
-    AbsoluteNode{left:40% top:30vh}
-    TextLine{ text: &quot;Hello, World!, I am writing using cobweb&quot; }
+                        <h1 id="tabs-wip"><a class="header" href="#tabs-wip">Tabs (WIP)</a></h1>
+<h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
+<ul>
+<li>Create a window with tabs that can be selected from</li>
+<li>Learn about radio buttons</li>
+<li>Learn about controlRoot and ControlMembers for transferring state</li>
+</ul>
+<h2 id="method"><a class="header" href="#method">Method</a></h2>
+<p>Tabs are pretty much radio buttons, so we will be using these to implement them in cobweb_ui.
+We will start with a basic window that should approximate what this book has taught so far.</p>
+<h3 id="starting-rust-code"><a class="header" href="#starting-rust-code">Starting rust code.</a></h3>
+<p>Hopefully this is familiar from previous chapters.</p>
+<pre><code class="language-rs">
+use bevy::prelude::*;
+use bevy_cobweb_ui::prelude::*;
 
-<span class="boring">}
-</span></code></pre></pre>
-<p>We have now moved the text around. You can also experiment with other units such as <code>40px 40vw</code>.</p>
-<p>Separate fields are not comma separated.</p>
-<p>let's try another loadable <code>BackgroundColor</code>:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
-    AbsoluteNode{left:40%}
-    BackgroundColor(#FFFF00)
-    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
+//-------------------------------------------------------------------------------------------------------------------
 
-<span class="boring">}
-</span></code></pre></pre>
-<p>We can see this does not contrast well with the text without recompiling!</p>
-<p>Hex values convert to <code>Srgba</code> colours.</p>
-<h4 id="animations"><a class="header" href="#animations">Animations</a></h4>
-<p>Let's add hovering effects. We will start off by changing the background colours based on user hovering.</p>
-<h5 id="hovering-and-pressing"><a class="header" href="#hovering-and-pressing">Hovering and pressing</a></h5>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
-    AbsoluteNode{left:40%}
-    TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
-    
-    Animated&lt;BackgroundColor&gt;{
-        idle:#FF0000 // You can also input colours in other formats
-        hover:Hsla{ hue:120 saturation:1.0 lightness:0.50 alpha:1.0 }
-        press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
-    }
-<span class="boring">}
-</span></code></pre></pre>
-<p><code>Animated</code> is a loadable that works with implementers of the <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/sickle_ext/trait.AnimatableAttribute.html">AnimatableAttribute trait</a>. One example implementer is <code>BackgroundColor</code>.</p>
-<h4 id="next"><a class="header" href="#next">Next</a></h4>
-<p>Next we will look at how we know what loadables we can use based on the documentation, and what fields are available in each loadable.</p>
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {});
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+fn main() {
+    App::new()
+        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                window_theme: Some(bevy::window::WindowTheme::Dark),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(CobwebUiPlugin)
+        .load(&quot;main.cob&quot;)
+        .add_systems(OnEnter(LoadState::Done), build_ui)
+        .run();
+}
+</code></pre>
+<h3 id="starting-cob-file"><a class="header" href="#starting-cob-file">Starting COB file</a></h3>
+<p><code>GridNode</code> and <code>AbsoluteGridNode</code> are used to create an orderly scaled layout.</p>
+<p><code>FlexNode</code> is used to center the text on some titles.</p>
+<p>Note we can do some abstractions to tidy up the code, we will stick to simplicity at the expense of verbosity.
+Once we have the functionality sorted we look at some abstractions.</p>
+<p>Hopefully this code is also mostly familiar from previous chapters.</p>
+<pre><code>#scenes
+&quot;main_scene&quot;
+    AbsoluteGridNode{left:30% width:40vw min_height:30vh   }
+    BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 })
+    &quot;title&quot;
+        FlexNode{justify_main:Center}
+        &quot;text&quot;
+            TextLine{ text: &quot;Tabs education&quot;}
+            TextLineColor(Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 })
+
+    //Actual tab menu
+    &quot;tab_menu&quot;
+        GridNode{grid_auto_flow:Column}
+        &quot;info&quot;
+            FlexNode{justify_main:Center}
+            &quot;text&quot;
+                TextLine{ text: &quot;Info&quot; }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+            
+        &quot;exit&quot;
+            FlexNode{justify_main:Center}
+            &quot;text&quot;
+                TextLine{ text: &quot;Exit button&quot;}
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+
+    //This is what changes based on menu selection
+    &quot;tab_content&quot;
+        GridNode{ height:25vh }
+        BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 })
+
+    &quot;footer_content&quot;
+            FlexNode{justify_main:Center}
+            &quot;text&quot;
+                TextLine{ text: &quot;I don't change&quot; }
+                TextLineColor(Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0})
+        
+
+
+//tab content that will be spawned at runtime
+
+&quot;info_tab&quot;
+    FlexNode{justify_main:Center}
+    TextLine{text:&quot;You are in the info tab&quot;}
+
+&quot;exit_tab&quot;
+    //Not implemented
+    FlexNode{justify_main:Center}
+    TextLine{text:&quot;Click me to quit&quot;}
+</code></pre>
+<h3 id="filling-in-tab_content"><a class="header" href="#filling-in-tab_content">Filling in tab_content</a></h3>
+<p>Let's run this and see our ui.</p>
+<ul>
+<li>Our starting code has an empty lightly coloured square box where our tab content should go.</li>
+<li>Two buttons are above the square box these will be our tab menus.</li>
+<li>A title and footer they are there to serve as normal constant values regardless of tab.</li>
+</ul>
+<p>First thing to do now is spawn <code>info_tab</code> when <code>info</code> is clicked.</p>
+<pre><code class="language-rs">    //Snip
+    c.ui_root()
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            //Get entity to place in our scene
+            let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
+            scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
+                });
+            });
+        });
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="getting_starting.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="quick_notes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="cob_fields.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="errors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -217,10 +269,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="getting_starting.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="quick_notes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="cob_fields.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="errors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
