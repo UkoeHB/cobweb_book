@@ -158,7 +158,7 @@ use bevy_cobweb_ui::prelude::*;
 
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
-    c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
+    c.ui_root().spawn_scene_simple((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -185,7 +185,7 @@ fn main() {
 <p>When all the cob files are loaded this will call our UI setup system:
 <code>.add_systems(OnEnter(LoadState::Done), build_ui)</code></p>
 <p>This makes a new UI hierarchy with its own root node:
-<code>c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);</code></p>
+<code>c.ui_root().spawn_scene_simple((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);</code></p>
 <h2 id="cob-code"><a class="header" href="#cob-code">COB code</a></h2>
 <p>Create a new folder called <code>assets</code>.</p>
 <p>Create a new file called <code>main.cob</code>.</p>

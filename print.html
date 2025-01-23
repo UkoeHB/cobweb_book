@@ -174,7 +174,7 @@ use bevy_cobweb_ui::prelude::*;
 
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
-    c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
+    c.ui_root().spawn_scene_simple((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -201,7 +201,7 @@ fn main() {
 <p>When all the cob files are loaded this will call our UI setup system:
 <code>.add_systems(OnEnter(LoadState::Done), build_ui)</code></p>
 <p>This makes a new UI hierarchy with its own root node:
-<code>c.ui_root().spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);</code></p>
+<code>c.ui_root().spawn_scene_simple((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s);</code></p>
 <h2 id="cob-code"><a class="header" href="#cob-code">COB code</a></h2>
 <p>Create a new folder called <code>assets</code>.</p>
 <p>Create a new file called <code>main.cob</code>.</p>
@@ -408,7 +408,7 @@ When you read the documentation of each loadable hopefully you will be able to e
         });
 }
 </code></pre>
-<p>We have changed <code>spawn_scene</code> to be <code>spawn_scene_and_edit</code>.</p>
+<p>We have changed <code>spawn_scene_simple</code> to be <code>spawn_scene_and_edit</code>.</p>
 <p>When we load <code>&quot;main_scene&quot;</code> in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>scene_handle</code> similar to commands along with extension methods provided by cobweb.</p>
 <p>Inside the closure we call <code>get(cell::text)</code> which is basically a path syntax to go straight to the text node. It also possible to call <code>edit</code> on <code>&quot;cell&quot;</code> then call <code>update_text</code> inside the resulting closure.</p>
 <p>Recompile and run the program. You will see your text has changed to reflect the rust code.</p>
@@ -794,7 +794,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
 fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
-            let entity = spawn_scene.id();
+            let entity = scene_handle.id();
             scene_handle.on_pressed(move |mut commands: Commands| {
                 commands.get_entity(entity).result()?.despawn_recursive();
                 commands.run_system_cached(spawn_main_interface);
@@ -1001,7 +1001,7 @@ Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.<
 <p>You can find more details about cob files <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/loading/index.html">here</a>.</p>
 <h2 id="pulling-existing-node-to-edit"><a class="header" href="#pulling-existing-node-to-edit">Pulling existing node to edit</a></h2>
 <p>For creating nodes from scratch we used <code>commands.ui_builder(UiRoot)</code> (or <code>commands.ui_root()</code>). To modify an existing UI node, we can use the <code>ui_builder</code> extension with the entity that will be the parent of the newly-spawned scene:
-<code>commands.ui_builder(parent_entity).spawn_scene(..)</code>.</p>
+<code>commands.ui_builder(parent_entity).spawn_scene_simple(..)</code>.</p>
 <p>If you use <code>commands.get</code> you can end up with this error:</p>
 <p><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken. at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="errors"><a class="header" href="#errors">Errors</a></h1>
@@ -1014,7 +1014,7 @@ Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.<
 <p><code>WARN bevy_cobweb_ui::loading::cache::commands_buffer: reparenting file CobFile(&quot;ui/colour_scheme.cob&quot;) from Parent(CobFile(&quot;ui/panels/outliner.cob&quot;)) to Parent(CobFile(&quot;ui/moons.cob&quot;)) at /home/lyndonm/.cargo/git/checkouts/bevy_cobweb_ui-68d12fe85b5a400c/5b3a3aa/src/loading/cache/commands_buffer.rs:485</code></p>
 <h2 id="failing-to-use-ui_builder-to-load-a-scene"><a class="header" href="#failing-to-use-ui_builder-to-load-a-scene">Failing to use <code>ui_builder</code> to load a scene</a></h2>
 <p>If you get an error like below when loading a scene inside another scene, then use the <code>ui_builder</code> extension with the entity you want to be the parent of the newly-spawned scene:
-<code>commands.ui_builder(parent_entity).spawn_scene(..)</code></p>
+<code>commands.ui_builder(parent_entity).spawn_scene_simple(..)</code></p>
 <pre><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken.
     at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267
 </code></pre>

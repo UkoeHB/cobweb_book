@@ -172,7 +172,7 @@
         });
 }
 </code></pre>
-<p>We have changed <code>spawn_scene</code> to be <code>spawn_scene_and_edit</code>.</p>
+<p>We have changed <code>spawn_scene_simple</code> to be <code>spawn_scene_and_edit</code>.</p>
 <p>When we load <code>&quot;main_scene&quot;</code> in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>scene_handle</code> similar to commands along with extension methods provided by cobweb.</p>
 <p>Inside the closure we call <code>get(cell::text)</code> which is basically a path syntax to go straight to the text node. It also possible to call <code>edit</code> on <code>&quot;cell&quot;</code> then call <code>update_text</code> inside the resulting closure.</p>
 <p>Recompile and run the program. You will see your text has changed to reflect the rust code.</p>
