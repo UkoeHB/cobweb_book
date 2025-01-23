@@ -50,7 +50,7 @@ You can find more details about cob files [here](https://docs.rs/bevy_cobweb_ui/
 
 ## Pulling existing node to edit
 For creating nodes from scratch we used `commands.ui_builder(UiRoot)` (or `commands.ui_root()`). To modify an existing UI node, we can use the `ui_builder` extension with the entity that will be the parent of the newly-spawned scene:
-`commands.ui_builder(parent_entity).spawn_scene(..)`.
+`commands.ui_builder(parent_entity).spawn_scene_simple(..)`.
 
 If you use `commands.get` you can end up with this error:
 

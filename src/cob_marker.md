@@ -328,7 +328,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
 fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
         .spawn_scene_and_edit(("main.cob", "respawn_button"), &mut s, |scene_handle| {
-            let entity = spawn_scene.id();
+            let entity = scene_handle.id();
             scene_handle.on_pressed(move |mut commands: Commands| {
                 commands.get_entity(entity).result()?.despawn_recursive();
                 commands.run_system_cached(spawn_main_interface);

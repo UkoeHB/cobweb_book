@@ -47,7 +47,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
 }
 ```
 
-We have changed `spawn_scene` to be `spawn_scene_and_edit`.
+We have changed `spawn_scene_simple` to be `spawn_scene_and_edit`.
 
 When we load `"main_scene"` in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use `scene_handle` similar to commands along with extension methods provided by cobweb.
 

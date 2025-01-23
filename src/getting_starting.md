@@ -40,7 +40,7 @@ use bevy_cobweb_ui::prelude::*;
 
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
-    c.ui_root().spawn_scene(("main.cob", "main_scene"), &mut s);
+    c.ui_root().spawn_scene_simple(("main.cob", "main_scene"), &mut s);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ When all the cob files are loaded this will call our UI setup system:
 `.add_systems(OnEnter(LoadState::Done), build_ui)`
 
 This makes a new UI hierarchy with its own root node:
-`c.ui_root().spawn_scene(("main.cob", "main_scene"), &mut s);`
+`c.ui_root().spawn_scene_simple(("main.cob", "main_scene"), &mut s);`
 
 
 ## COB code

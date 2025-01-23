@@ -15,7 +15,7 @@ You may get a warning like below, it means you added a file to multiple manifest
 
 ## Failing to use `ui_builder` to load a scene
 If you get an error like below when loading a scene inside another scene, then use the `ui_builder` extension with the entity you want to be the parent of the newly-spawned scene:
-`commands.ui_builder(parent_entity).spawn_scene(..)`
+`commands.ui_builder(parent_entity).spawn_scene_simple(..)`
 ```
 WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken.
     at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267
