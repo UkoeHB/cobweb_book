@@ -520,7 +520,6 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
         .spawn_scene(("main.cob", "main_scene"), &mut s, |scene_handle| {
             //Get entity to place in our scene
             let tab_content_entity = scene_handle.get("tab_content").id();
-            let tab_menu_entity = scene_handle.get("tab_menu").id();
             scene_handle.edit("tab_menu::info", |scene_handle| {
                 let info_button_entity = scene_handle.id();
 
@@ -529,10 +528,6 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
                         tab_commands.despawn_descendants();
                     };
 
-                    //Radio button select
-                    c.ui_builder(tab_menu_entity)
-                        .react()
-                        .entity_event(info_button_entity, Select);
                     //Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple(("main.cob", "info_tab"), &mut s);
@@ -545,10 +540,6 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
                     if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
                         tab_commands.despawn_descendants();
                     };
-                    //Radio button select
-                    c.ui_builder(tab_menu_entity)
-                        .react()
-                        .entity_event(exit_button_entity, Select);
                     //Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple(("main.cob", "exit_tab"), &mut s);
@@ -581,9 +572,7 @@ We can consolodate our tab change code, first lets get the information needed to
 ```rs
 #[derive(Event)]
 struct TabChange {
-    tab_menu_entity: Entity,
     tab_content_entity: Entity,
-    button_entity: Entity,
     scene_name: String,
 }
 
@@ -596,10 +585,6 @@ fn tab_change(trigger: Trigger<TabChange>, mut c: Commands, mut s: SceneBuilder)
     if let Some(mut tab_commands) = c.get_entity(trigger.tab_content_entity) {
         tab_commands.despawn_descendants();
     };
-
-    c.ui_builder(trigger.tab_menu_entity)
-        .react()
-        .entity_event(trigger.button_entity, Select);
 
     c.ui_builder(trigger.tab_content_entity)
         .spawn_scene_simple(("main.cob", trigger.scene_name.clone()), &mut s);
@@ -620,9 +605,7 @@ use bevy_cobweb_ui::prelude::*;
 
 #[derive(Event)]
 struct TabChange {
-    tab_menu_entity: Entity,
     tab_content_entity: Entity,
-    button_entity: Entity,
     scene_name: String,
 }
 
@@ -632,24 +615,19 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
         .spawn_scene(("main.cob", "main_scene"), &mut s, |scene_handle| {
             //Get entity to place in our scene
             let tab_content_entity = scene_handle.get("tab_content").id();
-            let tab_menu_entity = scene_handle.get("tab_menu").id();
             scene_handle.edit("tab_menu::info", |scene_handle| {
                 let info_button_entity = scene_handle.id();
 
                 scene_handle.on_pressed(move |mut c: Commands| {
                     c.trigger(TabChange {
-                        tab_menu_entity,
                         tab_content_entity,
-                        button_entity: info_button_entity,
                         scene_name: "info_tab".to_string(),
                     });
                 });
 
                 //Set it up as initial tab
                 scene_handle.commands().trigger(TabChange {
-                    tab_menu_entity,
                     tab_content_entity,
-                    button_entity: info_button_entity,
                     scene_name: "info_tab".to_string(),
                 });
             });
@@ -659,9 +637,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
                 let calm_button_entity = scene_handle.id();
                 scene_handle.on_pressed(move |mut c: Commands| {
                     c.trigger(TabChange {
-                        tab_menu_entity,
                         tab_content_entity,
-                        button_entity: calm_button_entity,
                         scene_name: "calm_tab".to_string(),
                     });
                 });
@@ -669,96 +645,6 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
             //handling exit tab
             scene_handle.edit("tab_menu::exit", |scene_handle| {
                 let exit_button_entity = scene_handle.id();
-                scene_handle.on_pressed(move |mut c: Commands| {
-                    c.trigger(TabChange {
-                        tab_menu_entity,
-                        tab_content_entity,
-                        button_entity: exit_button_entity,
-                        scene_name: "exit_tab".to_string(),
-                    });
-                });
-            });
-        });
-}
-
-fn tab_change(trigger: Trigger<TabChange>, mut c: Commands, mut s: SceneBuilder) {
-    if let Some(mut tab_commands) = c.get_entity(trigger.tab_content_entity) {
-        tab_commands.despawn_descendants();
-    };
-
-    c.ui_builder(trigger.tab_menu_entity)
-        .react()
-        .entity_event(trigger.button_entity, Select);
-
-    c.ui_builder(trigger.tab_content_entity)
-        .spawn_scene_simple(("main.cob", trigger.scene_name.clone()), &mut s);
-}
-
-//-------------------------------------------------------------------------------------------------------------------
-
-fn main() {
-    App::new()
-        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                window_theme: Some(bevy::window::WindowTheme::Dark),
-                ..default()
-            }),
-            ..default()
-        }))
-        .add_plugins(CobwebUiPlugin)
-        .load("main.cob")
-        .add_systems(OnEnter(LoadState::Done), build_ui)
-        .add_observer(tab_change)
-        .run();
-}
-```
-
-TODO noticed redundant code final result should be this
-
-```rs
-use bevy::prelude::*;
-use bevy_cobweb_ui::prelude::*;
-
-//-------------------------------------------------------------------------------------------------------------------
-
-#[derive(Event)]
-struct TabChange {
-    tab_content_entity: Entity,
-    scene_name: String,
-}
-
-fn build_ui(mut c: Commands, mut s: SceneBuilder) {
-    c.spawn(Camera2d);
-    c.ui_root()
-        .spawn_scene(("main.cob", "main_scene"), &mut s, |scene_handle| {
-            //Get entity to place in our scene
-            let tab_content_entity = scene_handle.get("tab_content").id();
-            scene_handle.edit("tab_menu::info", |scene_handle| {
-                scene_handle.on_pressed(move |mut c: Commands| {
-                    c.trigger(TabChange {
-                        tab_content_entity,
-                        scene_name: "info_tab".to_string(),
-                    });
-                });
-
-                //Set it up as initial tab
-                scene_handle.commands().trigger(TabChange {
-                    tab_content_entity,
-                    scene_name: "info_tab".to_string(),
-                });
-            });
-            //calm tab
-
-            scene_handle.edit("tab_menu::calm", |scene_handle| {
-                scene_handle.on_pressed(move |mut c: Commands| {
-                    c.trigger(TabChange {
-                        tab_content_entity,
-                        scene_name: "calm_tab".to_string(),
-                    });
-                });
-            });
-            //handling exit tab
-            scene_handle.edit("tab_menu::exit", |scene_handle| {
                 scene_handle.on_pressed(move |mut c: Commands| {
                     c.trigger(TabChange {
                         tab_content_entity,

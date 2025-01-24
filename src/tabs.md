@@ -245,7 +245,6 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
             //Get entity to place in our scene
             let tab_content_entity = scene_handle.get("tab_content").id();
             // Menu that holds radio state
-            let tab_menu_entity = scene_handle.get("tab_menu").id();
             scene_handle.edit("tab_menu::info", |scene_handle| {
                 let info_button_entity = scene_handle.id();
 
@@ -254,10 +253,6 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
                         tab_commands.despawn_descendants();
                     };
 
-                    //Radio button select
-                    c.ui_builder(tab_menu_entity)
-                        .react()
-                        .entity_event(info_button_entity, Select);
                     //Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple(("main.cob", "info_tab"), &mut s);
@@ -270,10 +265,6 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
                     if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
                         tab_commands.despawn_descendants();
                     };
-                    //Radio button select
-                    c.ui_builder(tab_menu_entity)
-                        .react()
-                        .entity_event(exit_button_entity, Select);
                     //Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple(("main.cob", "exit_tab"), &mut s);
@@ -284,14 +275,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
 
 ```
 
-`let tab_menu_entity = scene_handle.get("tab_menu").id();` is to get the entity that holds the RadioGroup.
 
-This will tell the RadioGroup Node that we have selected this button.
-```rs
-c.ui_builder(tab_menu_entity)
-    .react()
-    .entity_event(info_button_entity, Select);
-```
 
 We can run this and see nothing has happened!
 
