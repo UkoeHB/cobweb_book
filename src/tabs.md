@@ -133,3 +133,592 @@ First thing to do now is spawn `info_tab` when `info` is clicked.
             });
         });
 ```
+
+Now lets do the same for the exit tab.
+
+```rs
+        //Snip    
+        c.ui_root()
+        .spawn_scene(("main.cob", "main_scene"), &mut s, |scene_handle| {
+            //Get entity to place in our scene
+            let tab_content_entity = scene_handle.get("tab_content").id();
+            scene_handle.edit("tab_menu::info", |scene_handle| {
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple(("main.cob", "info_tab"), &mut s);
+                });
+            });
+            //handling exit tab
+            scene_handle.edit("tab_menu::exit", |scene_handle| {
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple(("main.cob", "exit_tab"), &mut s);
+                });
+            });
+        });
+
+```
+
+We also need to clear the tab contents upon selecting a new tab.
+
+```rs
+    c.ui_root()
+        .spawn_scene(("main.cob", "main_scene"), &mut s, |scene_handle| {
+            //Get entity to place in our scene
+            let tab_content_entity = scene_handle.get("tab_content").id();
+            scene_handle.edit("tab_menu::info", |scene_handle| {
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
+                        tab_commands.despawn_descendants();
+                    };
+
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple(("main.cob", "info_tab"), &mut s);
+                });
+            });
+            //handling exit tab
+            scene_handle.edit("tab_menu::exit", |scene_handle| {
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
+                        tab_commands.despawn_descendants();
+                    };
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple(("main.cob", "exit_tab"), &mut s);
+                });
+            });
+        });
+```
+
+Ok we got it working but its not really fun or intuitive we still have some problems to solve.
+- The tab selection doesn't communicate which tab is active.
+- It should default to a tab.
+
+We will start with communication
+
+### Styling our tab headers
+
+
+#### Initial Cob Changes
+The plan is to distinguish between selected and deselected tabs by changing the background colour.
+
+To do this we need to use radio buttons.
+
+Adding this as below.
+
+```
+    "tab_menu"
+        GridNode{grid_auto_flow:Column}
+        RadioGroup //Stores RadioButton State
+        "info"
+            RadioButton //New Radio Button Code
+            FlexNode{justify_main:Center}
+            "text"
+                TextLine{ text: "Info" }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+            
+        "exit"
+            FlexNode{justify_main:Center}
+            RadioButton //New Radio Button Code
+            "text"
+                TextLine{ text: "Exit button" }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+
+```
+
+These changes by itself will not have any noticable impact, we will need to also modify the rust code to allow selection.
+
+#### Rust changes
+
+We need to put in our programming logic.
+
+as below
+
+```rs
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
+    c.spawn(Camera2d);
+    c.ui_root()
+        .spawn_scene(("main.cob", "main_scene"), &mut s, |scene_handle| {
+            //Get entity to place in our scene
+            let tab_content_entity = scene_handle.get("tab_content").id();
+            // Menu that holds radio state
+            let tab_menu_entity = scene_handle.get("tab_menu").id();
+            scene_handle.edit("tab_menu::info", |scene_handle| {
+                let info_button_entity = scene_handle.id();
+
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
+                        tab_commands.despawn_descendants();
+                    };
+
+                    //Radio button select
+                    c.ui_builder(tab_menu_entity)
+                        .react()
+                        .entity_event(info_button_entity, Select);
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple(("main.cob", "info_tab"), &mut s);
+                });
+            });
+            //handling exit tab
+            scene_handle.edit("tab_menu::exit", |scene_handle| {
+                let exit_button_entity = scene_handle.id();
+                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
+                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
+                        tab_commands.despawn_descendants();
+                    };
+                    //Radio button select
+                    c.ui_builder(tab_menu_entity)
+                        .react()
+                        .entity_event(exit_button_entity, Select);
+                    //Use this instead of c.get_entity()
+                    c.ui_builder(tab_content_entity)
+                        .spawn_scene_simple(("main.cob", "exit_tab"), &mut s);
+                });
+            });
+        });
+}
+
+```
+
+`let tab_menu_entity = scene_handle.get("tab_menu").id();` is to get the entity that holds the RadioGroup.
+
+This will tell the RadioGroup Node that we have selected this button.
+```rs
+c.ui_builder(tab_menu_entity)
+    .react()
+    .entity_event(info_button_entity, Select);
+```
+
+We can run this and see nothing has happened!
+
+However now we use pseudo state information in cob.
+
+#### Next COB Changes
+
+Lets start with the code to add colours.
+
+```
+    "tab_menu"
+        GridNode{grid_auto_flow:Column}
+        RadioGroup //Stores RadioButton State
+        "info"
+            RadioButton //New Radio Button Code
+            FlexNode{justify_main:Center}
+            //New colour logic
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]  
+            "text"
+                TextLine{ text: "Info" }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+            
+        "exit"
+            FlexNode{justify_main:Center}
+            RadioButton //New Radio Button Code
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]  
+            "text"
+                TextLine{ text: "Exit button" }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+
+```
+Let's explain this code.
+
+`Animated<BackgroundColor>` allows you to define values based on the three css pseudostates `idle` `hover` `click`
+
+By encapsulating with `Multi` we can access states to put in our values.
+
+```
+Multi<Animated<BackgroundColor>>[
+    {
+        idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+
+    }
+    {
+        state:[Selected]
+        idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+    }
+]  
+```
+Now when our tabs change, we know which tab we have open!
+
+
+### Further styling and Sharing state
+
+I have added some more stying without incident.
+
+```
+#scenes
+"main_scene"
+    AbsoluteGridNode{left:30% width:40vw min_height:30vh   }
+    BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 })
+    "title"
+        FlexNode{justify_main:Center}
+        "text"
+            TextLine{ text: "Tabs education" }
+            TextLineColor(Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 })
+
+    //Actual tab menu
+    "tab_menu"
+        GridNode{grid_auto_flow:Column}
+        RadioGroup //Stores RadioButton State
+        "info"
+            RadioButton //New Radio Button Code
+            FlexNode{justify_main:Center}
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]
+            Multi<Animated<NodeShadow>>[
+                {
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 1px,
+                        blur_radius: 1px,
+                    }
+
+                }
+                {
+                    state:[Selected]
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 10px,
+                        blur_radius: 10px,
+                    }
+                }
+            ]  
+
+            "text"
+                TextLine{ text: "Info" }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+            
+        "exit"
+            FlexNode{justify_main:Center}
+            RadioButton //New Radio Button Code
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]  
+            Multi<Animated<NodeShadow>>[
+                {
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 1px,
+                        blur_radius: 1px,
+                    }
+
+                }
+                {
+                    state:[Selected]
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 10px,
+                        blur_radius: 10px,
+                    }
+                }
+            ]  
+            "text"
+                TextLine{ text: "Exit button" }
+                TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
+
+    //This is what changes based on menu selection
+    "tab_content"
+        GridNode{ height:25vh }
+        BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 })
+
+    "footer_content"
+            FlexNode{justify_main:Center}
+            "text"
+                TextLine{ text: "I don't change" }
+                TextLineColor(Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0})
+        
+
+
+//tab content that will be spawned at runtime
+
+"info_tab"
+    FlexNode{justify_main:Center}
+    "text"
+        TextLine{text:"You are in the info tab"}
+
+"exit_tab"
+    //Not implemented
+    FlexNode{justify_main:Center}
+    "text"
+        TextLine{text:"Click me to quit"}
+```
+
+Next bit of styling I want to add is textline change colour on hover.
+
+```
+    //Actual tab menu
+    "tab_menu"
+        GridNode{grid_auto_flow:Column}
+        RadioGroup //Stores RadioButton State
+        "info"
+            RadioButton //New Radio Button Code
+            FlexNode{justify_main:Center}
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]
+            Multi<Animated<NodeShadow>>[
+                {
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 1px,
+                        blur_radius: 1px,
+                    }
+
+                }
+                {
+                    state:[Selected]
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 10px,
+                        blur_radius: 10px,
+                    }
+                }
+            ]  
+
+            "text"
+                TextLine{ text: "Info" }
+                Multi<Animated<TextLineColor>>[
+                    {
+                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                    }
+                    {
+                        state:[Selected]
+                        idle:#FFFF00
+                    }
+                ]  
+
+            
+        "exit"
+            FlexNode{justify_main:Center}
+            RadioButton //New Radio Button Code
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]  
+            Multi<Animated<NodeShadow>>[
+                {
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 1px,
+                        blur_radius: 1px,
+                    }
+
+                }
+                {
+                    state:[Selected]
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 10px,
+                        blur_radius: 10px,
+                    }
+                }
+            ]  
+            "text"
+                TextLine{ text: "Exit button" }
+                Multi<Animated<TextLineColor>>[
+                    {
+                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                    }
+                    {
+                        state:[Selected]
+                        idle:#FFFF00
+                    }
+                ]  
+```
+
+We have a problem the text only changes colour when you hover on the text directly, but we want it to be for the entire node.
+
+This is a completely unforseen situation that I did not just invent for an example!
+
+#### ControlGroup
+
+
+`ControlMember` reads state information from the `ControlRoot`
+
+
+```
+    //Actual tab menu
+    "tab_menu"
+        GridNode{grid_auto_flow:Column}
+        RadioGroup //Stores RadioButton State
+        "info"
+            RadioButton //New Radio Button Code
+            FlexNode{justify_main:Center}
+            ControlRoot
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]
+            Multi<Animated<NodeShadow>>[
+                {
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 1px,
+                        blur_radius: 1px,
+                    }
+
+                }
+                {
+                    state:[Selected]
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 10px,
+                        blur_radius: 10px,
+                    }
+                }
+            ]  
+
+            "text"
+                TextLine{ text: "Info" }
+                ControlMember
+                Multi<Animated<TextLineColor>>[
+                    {
+                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                    }
+                    {
+                        state:[Selected]
+                        idle:#FFFF00
+                    }
+                ]  
+
+            
+        "exit"
+            FlexNode{justify_main:Center}
+            RadioButton //New Radio Button Code
+            ControlRoot // <-- New control root
+            Multi<Animated<BackgroundColor>>[
+                {
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
+
+                }
+                {
+                    state:[Selected]
+                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                }
+            ]  
+            Multi<Animated<NodeShadow>>[
+                {
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 1px,
+                        blur_radius: 1px,
+                    }
+
+                }
+                {
+                    state:[Selected]
+                    idle:{
+                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                        x_offset: 0px,
+                        y_offset: 0px,
+                        spread_radius: 10px,
+                        blur_radius: 10px,
+                    }
+                }
+            ]  
+            "text"
+                ControlMember
+                TextLine{ text: "Exit button" }
+                Multi<Animated<TextLineColor>>[
+                    {
+                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                    }
+                    {
+                        state:[Selected]
+                        idle:#FFFF00
+                    }
+                ]  
+```
+
+## Abstractions default selection and cleanup
+
+Next chapter we will introduce new abstractions to make our COB code more managable.
+
+we will also handle default state
