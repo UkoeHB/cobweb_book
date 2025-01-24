@@ -13,6 +13,6 @@
 - [Quick notes](./quick_notes.md)
 # Cookbook section (TODO)
 - [Tabs](./tabs.md)
-
+  - [Cleanup](./tabs_cleanup.md)
 # Common errors
 - [Errors](./errors.md)
