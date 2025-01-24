@@ -345,7 +345,6 @@ Once we have the functionality sorted we look at some abstractions.</p>
             //Get entity to place in our scene
             let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
             // Menu that holds radio state
-            let tab_menu_entity = scene_handle.get(&quot;tab_menu&quot;).id();
             scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
                 let info_button_entity = scene_handle.id();
 
@@ -354,10 +353,6 @@ Once we have the functionality sorted we look at some abstractions.</p>
                         tab_commands.despawn_descendants();
                     };
 
-                    //Radio button select
-                    c.ui_builder(tab_menu_entity)
-                        .react()
-                        .entity_event(info_button_entity, Select);
                     //Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
@@ -370,10 +365,6 @@ Once we have the functionality sorted we look at some abstractions.</p>
                     if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
                         tab_commands.despawn_descendants();
                     };
-                    //Radio button select
-                    c.ui_builder(tab_menu_entity)
-                        .react()
-                        .entity_event(exit_button_entity, Select);
                     //Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;exit_tab&quot;), &amp;mut s);
@@ -382,12 +373,6 @@ Once we have the functionality sorted we look at some abstractions.</p>
         });
 }
 
-</code></pre>
-<p><code>let tab_menu_entity = scene_handle.get(&quot;tab_menu&quot;).id();</code> is to get the entity that holds the RadioGroup.</p>
-<p>This will tell the RadioGroup Node that we have selected this button.</p>
-<pre><code class="language-rs">c.ui_builder(tab_menu_entity)
-    .react()
-    .entity_event(info_button_entity, Select);
 </code></pre>
 <p>We can run this and see nothing has happened!</p>
 <p>However now we use pseudo state information in cob.</p>
