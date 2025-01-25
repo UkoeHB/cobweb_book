@@ -318,9 +318,9 @@ Once we have the functionality sorted we look at some abstractions.</p>
 <p>Adding this as below.</p>
 <pre><code>    &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup //&lt;--- Stores RadioButton State
         &quot;info&quot;
-            RadioButton //New Radio Button Code
+            RadioButton // &lt;---New Radio Button Code
             FlexNode{justify_main:Center}
             &quot;text&quot;
                 TextLine{ text: &quot;Info&quot; }
@@ -328,7 +328,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
             
         &quot;exit&quot;
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton // &lt;---- New Radio Button Code
             &quot;text&quot;
                 TextLine{ text: &quot;Exit button&quot; }
                 TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
@@ -380,9 +380,9 @@ Once we have the functionality sorted we look at some abstractions.</p>
 <p>Lets start with the code to add colours.</p>
 <pre><code>    &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         &quot;info&quot;
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             //New colour logic
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
@@ -401,7 +401,8 @@ Once we have the functionality sorted we look at some abstractions.</p>
             
         &quot;exit&quot;
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
+            //New colour logic
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -447,9 +448,9 @@ Once we have the functionality sorted we look at some abstractions.</p>
     //Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         &quot;info&quot;
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
@@ -491,7 +492,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
             
         &quot;exit&quot;
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -559,9 +560,9 @@ Once we have the functionality sorted we look at some abstractions.</p>
 <pre><code>    //Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         &quot;info&quot;
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
@@ -599,6 +600,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
 
             &quot;text&quot;
                 TextLine{ text: &quot;Info&quot; }
+                //New Text Colour logic
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
                         idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
@@ -613,7 +615,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
             
         &quot;exit&quot;
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -649,6 +651,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
             ]  
             &quot;text&quot;
                 TextLine{ text: &quot;Exit button&quot; }
+                //New Text Colour logic
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
                         idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
@@ -667,11 +670,11 @@ Once we have the functionality sorted we look at some abstractions.</p>
 <pre><code>    //Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         &quot;info&quot;
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
-            ControlRoot
+            ControlRoot // &lt;-- Shares hover state
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -708,7 +711,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
 
             &quot;text&quot;
                 TextLine{ text: &quot;Info&quot; }
-                ControlMember
+                ControlMember // &lt;-- reads hover state
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
                         idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
@@ -723,8 +726,8 @@ Once we have the functionality sorted we look at some abstractions.</p>
             
         &quot;exit&quot;
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
-            ControlRoot // &lt;-- New control root
+            RadioButton 
+            ControlRoot // &lt;-- Shares hover state
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -759,7 +762,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
                 }
             ]  
             &quot;text&quot;
-                ControlMember
+                ControlMember// &lt;-- reads hover state
                 TextLine{ text: &quot;Exit button&quot; }
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
