@@ -332,6 +332,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
     FlexNode{justify_main:Center}
     "text"
         TextLine{text:"You are in the info tab"}
+"calm_tab" // <-- We will be adding this below
 
 "exit_tab"
     //Not implemented
