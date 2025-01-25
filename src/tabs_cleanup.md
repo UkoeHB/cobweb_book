@@ -593,7 +593,7 @@ fn tab_change(trigger: Trigger<TabChange>, mut c: Commands, mut s: SceneBuilder)
 ```
 
 Don't forget to add it.
-`.add_observer(tab_change).
+`.add_observer(tab_change).`
 
 
 Now the code for calling the observers and setting up the initial tab
