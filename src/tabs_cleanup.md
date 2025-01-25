@@ -22,9 +22,9 @@ Ideally we would have done it at the start but the choice was made to focus on t
     //Actual tab menu
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         "info"
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             ControlRoot
             Multi<Animated<BackgroundColor>>[
@@ -78,7 +78,7 @@ Ideally we would have done it at the start but the choice was made to focus on t
             
         "exit"
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
             ControlRoot
             Multi<Animated<BackgroundColor>>[
                 {
@@ -208,9 +208,9 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
     //Actual tab menu
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         "info"
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             ControlRoot
             Multi<Animated<BackgroundColor>>[
@@ -264,7 +264,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
             
         "exit"
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
             ControlRoot
             Multi<Animated<BackgroundColor>>[
                 {
@@ -370,7 +370,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
 
 
 +tab_selector = \
-    RadioButton //New Radio Button Code
+    RadioButton
     FlexNode{justify_main:Center}
     ControlRoot
     Multi<Animated<BackgroundColor>>[
@@ -435,7 +435,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
     //Actual tab menu
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         "info"
             +tab_selector{
                 "text"
