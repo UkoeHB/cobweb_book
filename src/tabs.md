@@ -212,9 +212,9 @@ Adding this as below.
 ```
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup //<--- Stores RadioButton State
         "info"
-            RadioButton //New Radio Button Code
+            RadioButton // <---New Radio Button Code
             FlexNode{justify_main:Center}
             "text"
                 TextLine{ text: "Info" }
@@ -222,7 +222,7 @@ Adding this as below.
             
         "exit"
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton // <---- New Radio Button Code
             "text"
                 TextLine{ text: "Exit button" }
                 TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
@@ -288,9 +288,9 @@ Lets start with the code to add colours.
 ```
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         "info"
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             //New colour logic
             Multi<Animated<BackgroundColor>>[
@@ -309,7 +309,8 @@ Lets start with the code to add colours.
             
         "exit"
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
+            //New colour logic
             Multi<Animated<BackgroundColor>>[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -364,9 +365,9 @@ I have added some more stying without incident.
     //Actual tab menu
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         "info"
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             Multi<Animated<BackgroundColor>>[
                 {
@@ -408,7 +409,7 @@ I have added some more stying without incident.
             
         "exit"
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
             Multi<Animated<BackgroundColor>>[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -479,9 +480,9 @@ Next bit of styling I want to add is textline change colour on hover.
     //Actual tab menu
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         "info"
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
             Multi<Animated<BackgroundColor>>[
                 {
@@ -519,6 +520,7 @@ Next bit of styling I want to add is textline change colour on hover.
 
             "text"
                 TextLine{ text: "Info" }
+                //New Text Colour logic
                 Multi<Animated<TextLineColor>>[
                     {
                         idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
@@ -533,7 +535,7 @@ Next bit of styling I want to add is textline change colour on hover.
             
         "exit"
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
+            RadioButton
             Multi<Animated<BackgroundColor>>[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -569,6 +571,7 @@ Next bit of styling I want to add is textline change colour on hover.
             ]  
             "text"
                 TextLine{ text: "Exit button" }
+                //New Text Colour logic
                 Multi<Animated<TextLineColor>>[
                     {
                         idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
@@ -595,11 +598,11 @@ This is a completely unforseen situation that I did not just invent for an examp
     //Actual tab menu
     "tab_menu"
         GridNode{grid_auto_flow:Column}
-        RadioGroup //Stores RadioButton State
+        RadioGroup
         "info"
-            RadioButton //New Radio Button Code
+            RadioButton
             FlexNode{justify_main:Center}
-            ControlRoot
+            ControlRoot // <-- Shares hover state
             Multi<Animated<BackgroundColor>>[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -636,7 +639,7 @@ This is a completely unforseen situation that I did not just invent for an examp
 
             "text"
                 TextLine{ text: "Info" }
-                ControlMember
+                ControlMember // <-- reads hover state
                 Multi<Animated<TextLineColor>>[
                     {
                         idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
@@ -651,8 +654,8 @@ This is a completely unforseen situation that I did not just invent for an examp
             
         "exit"
             FlexNode{justify_main:Center}
-            RadioButton //New Radio Button Code
-            ControlRoot // <-- New control root
+            RadioButton 
+            ControlRoot // <-- Shares hover state
             Multi<Animated<BackgroundColor>>[
                 {
                     idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
@@ -687,7 +690,7 @@ This is a completely unforseen situation that I did not just invent for an examp
                 }
             ]  
             "text"
-                ControlMember
+                ControlMember// <-- reads hover state
                 TextLine{ text: "Exit button" }
                 Multi<Animated<TextLineColor>>[
                     {
