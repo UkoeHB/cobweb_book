@@ -64,7 +64,7 @@ Make a central manifest file at `assets/manifest.cob`:
 
 The `as main` defines a manifest key for the file `main.cob`.
 
-Now replace the `.load("main.cob")` in your app with `.load("manifest.cob")`. You can also simplify `.spawn_scene_and_edit(("main.cob", "main_scene"), ...)` to `.spawn_scene_and_edit(("main", "main_scene"), ...)`, using the main file's manifest key.
+Now replace the `.load("main.cob")` in your app with `.load("manifest.cob")`. You can also simplify `.spawn_scene(("main.cob", "main_scene"), ...)` to `.spawn_scene(("main", "main_scene"), ...)`, using the main file's manifest key.
 
 ### #import
 

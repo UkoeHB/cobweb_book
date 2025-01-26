@@ -11,7 +11,7 @@
 # Final tutorial notes
 - [Cob file organization](./cob_organization.md)
 - [Quick notes](./quick_notes.md)
-# Cookbook section (TODO)
+# Cookbook section
 - [Tabs](./tabs.md)
   - [Cleanup](./tabs_cleanup.md)
 # Common errors
