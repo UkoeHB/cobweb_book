@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html" class="active"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html" class="active"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -165,15 +165,15 @@
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
         });
 }
 </code></pre>
-<p>We have changed <code>spawn_scene_simple</code> to be <code>spawn_scene_and_edit</code>.</p>
-<p>When we load <code>&quot;main_scene&quot;</code> in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>scene_handle</code> similar to commands along with extension methods provided by cobweb.</p>
+<p>We have changed <code>spawn_scene_simple</code> to <code>spawn_scene</code>.</p>
+<p>When we load <code>&quot;main_scene&quot;</code> from the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>scene_handle</code>, which is similar to commands and has extension methods provided by cobweb.</p>
 <p>Inside the closure we call <code>get(cell::text)</code> which is basically a path syntax to go straight to the text node. It also possible to call <code>edit</code> on <code>&quot;cell&quot;</code> then call <code>update_text</code> inside the resulting closure.</p>
 <p>Recompile and run the program. You will see your text has changed to reflect the rust code.</p>
 <h3 id="spawning-new-nodes"><a class="header" href="#spawning-new-nodes">Spawning new nodes</a></h3>
@@ -206,14 +206,14 @@
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             // Spawning new ui nodes inside our main scene
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.get(&quot;cell::text&quot;).update_text(i.to_string());
                 });
             }
@@ -235,16 +235,16 @@
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
-                        scene_handle.on_pressed(move|/* We can write arbitrary bevy parameters here*/|{
+                        scene_handle.on_pressed(move |/* We can write arbitrary bevy parameters here*/|{
                             println!(&quot;You clicked {}&quot;, i);
                         });
                     });

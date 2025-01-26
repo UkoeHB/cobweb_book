@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html" class="active"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html" class="active"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -155,13 +155,13 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -231,14 +231,14 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface); // &lt;-- add the marker component
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -262,14 +262,14 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -280,7 +280,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
             }
 
             // NEW: despawn button
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 // Despawn the main interface on press.
                 // Notice this looks like a normal bevy query.
                 scene_handle.on_pressed(
@@ -311,14 +311,14 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -327,7 +327,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
                     });
                 });
             }
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -341,7 +341,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
             });
 
             // NEW: exit button
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
@@ -357,13 +357,13 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
 <p>Let's add a system for making respawn buttons. The respawn button will spawn the main interface.</p>
 <pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             //TODO respawning main interface
         });
 }
 </code></pre>
 <p>Now call it on despawn</p>
-<pre><code class="language-rs">            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+<pre><code class="language-rs">            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -395,14 +395,14 @@ fn build_ui(mut c: Commands) {
 
 fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -411,7 +411,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
                     });
                 });
             }
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -424,7 +424,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
                     },
                 );
             });
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
@@ -438,7 +438,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
 
 fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             let entity = scene_handle.id();
             scene_handle.on_pressed(move |mut commands: Commands| {
                 commands.get_entity(entity).result()?.despawn_recursive();
@@ -489,7 +489,7 @@ fn build_ui(mut c: Commands) {
 
 fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             // &lt;-- We no longer have insert here
             scene_handle
                 .get(&quot;cell::text&quot;)

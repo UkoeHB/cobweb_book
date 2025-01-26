@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section (TODO)</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">9.</strong> Errors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -401,15 +401,15 @@ When you read the documentation of each loadable hopefully you will be able to e
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
         });
 }
 </code></pre>
-<p>We have changed <code>spawn_scene_simple</code> to be <code>spawn_scene_and_edit</code>.</p>
-<p>When we load <code>&quot;main_scene&quot;</code> in the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>scene_handle</code> similar to commands along with extension methods provided by cobweb.</p>
+<p>We have changed <code>spawn_scene_simple</code> to <code>spawn_scene</code>.</p>
+<p>When we load <code>&quot;main_scene&quot;</code> from the cob file, we automatically load all the child nodes recursively. The second argument is a closure where we can use <code>scene_handle</code>, which is similar to commands and has extension methods provided by cobweb.</p>
 <p>Inside the closure we call <code>get(cell::text)</code> which is basically a path syntax to go straight to the text node. It also possible to call <code>edit</code> on <code>&quot;cell&quot;</code> then call <code>update_text</code> inside the resulting closure.</p>
 <p>Recompile and run the program. You will see your text has changed to reflect the rust code.</p>
 <h3 id="spawning-new-nodes"><a class="header" href="#spawning-new-nodes">Spawning new nodes</a></h3>
@@ -442,14 +442,14 @@ When you read the documentation of each loadable hopefully you will be able to e
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             // Spawning new ui nodes inside our main scene
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.get(&quot;cell::text&quot;).update_text(i.to_string());
                 });
             }
@@ -471,16 +471,16 @@ When you read the documentation of each loadable hopefully you will be able to e
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
-                        scene_handle.on_pressed(move|/* We can write arbitrary bevy parameters here*/|{
+                        scene_handle.on_pressed(move |/* We can write arbitrary bevy parameters here*/|{
                             println!(&quot;You clicked {}&quot;, i);
                         });
                     });
@@ -510,13 +510,13 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -586,14 +586,14 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface); // &lt;-- add the marker component
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -617,14 +617,14 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -635,7 +635,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
             }
 
             // NEW: despawn button
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 // Despawn the main interface on press.
                 // Notice this looks like a normal bevy query.
                 scene_handle.on_pressed(
@@ -666,14 +666,14 @@ struct MainInterface;
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -682,7 +682,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
                     });
                 });
             }
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -696,7 +696,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
             });
 
             // NEW: exit button
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
@@ -712,13 +712,13 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
 <p>Let's add a system for making respawn buttons. The respawn button will spawn the main interface.</p>
 <pre><code class="language-rs">fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             //TODO respawning main interface
         });
 }
 </code></pre>
 <p>Now call it on despawn</p>
-<pre><code class="language-rs">            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+<pre><code class="language-rs">            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -750,14 +750,14 @@ fn build_ui(mut c: Commands) {
 
 fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             scene_handle.insert(MainInterface);
             scene_handle
                 .get(&quot;cell::text&quot;)
                 .update_text(&quot;My runtime text&quot;);
 
             for i in (0..=10).into_iter() {
-                scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
+                scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;number_text&quot;), |scene_handle| {
                     scene_handle.edit(&quot;cell::text&quot;, |scene_handle| {
                         scene_handle.update_text(i.to_string());
                         scene_handle.on_pressed(move|/* We write arbitary bevy parameters here*/|{
@@ -766,7 +766,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
                     });
                 });
             }
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;despawn_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |interface_query: Query&lt;Entity, With&lt;MainInterface&gt;&gt;,
                      mut commands: Commands| {
@@ -779,7 +779,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
                     },
                 );
             });
-            scene_handle.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
+            scene_handle.spawn_scene((&quot;main.cob&quot;, &quot;exit_button&quot;), |scene_handle| {
                 scene_handle.on_pressed(
                     |mut commands: Commands, focused_windows: Query&lt;Entity, With&lt;Window&gt;&gt;| {
                         let window = focused_windows.get_single()?;
@@ -793,7 +793,7 @@ fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
 
 fn spawn_respawn_button(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;respawn_button&quot;), &amp;mut s, |scene_handle| {
             let entity = scene_handle.id();
             scene_handle.on_pressed(move |mut commands: Commands| {
                 commands.get_entity(entity).result()?.despawn_recursive();
@@ -844,7 +844,7 @@ fn build_ui(mut c: Commands) {
 
 fn spawn_main_interface(mut c: Commands, mut s: SceneBuilder) {
     c.ui_root()
-        .spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
             // &lt;-- We no longer have insert here
             scene_handle
                 .get(&quot;cell::text&quot;)
@@ -958,7 +958,7 @@ $text_colour = Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}
 &quot;ui/colour_scheme.cob&quot; as cs
 </code></pre>
 <p>The <code>as main</code> defines a manifest key for the file <code>main.cob</code>.</p>
-<p>Now replace the <code>.load(&quot;main.cob&quot;)</code> in your app with <code>.load(&quot;manifest.cob&quot;)</code>. You can also simplify <code>.spawn_scene_and_edit((&quot;main.cob&quot;, &quot;main_scene&quot;), ...)</code> to <code>.spawn_scene_and_edit((&quot;main&quot;, &quot;main_scene&quot;), ...)</code>, using the main file's manifest key.</p>
+<p>Now replace the <code>.load(&quot;main.cob&quot;)</code> in your app with <code>.load(&quot;manifest.cob&quot;)</code>. You can also simplify <code>.spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), ...)</code> to <code>.spawn_scene((&quot;main&quot;, &quot;main_scene&quot;), ...)</code>, using the main file's manifest key.</p>
 <h3 id="import"><a class="header" href="#import">#import</a></h3>
 <p>Imports let you bring in <code>#defs</code> from other files.</p>
 <p>In any file where you want to import defs you can do as below.</p>
@@ -1004,20 +1004,19 @@ Send the event using <code>commands.react().broadcast(MyArbitaryStruct)</code>.<
 <code>commands.ui_builder(parent_entity).spawn_scene_simple(..)</code>.</p>
 <p>If you use <code>commands.get</code> you can end up with this error:</p>
 <p><code>WARN bevy_ui::layout: Node (233769v8) is in a non-UI entity hierarchy. You are using an entity with UI components as a child of an entity without UI components, your UI layout may be broken. at /home/lyndonm/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ui-0.15.0-rc.3/src/layout/mod.rs:267</code></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="tabs-wip"><a class="header" href="#tabs-wip">Tabs (WIP)</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tabs"><a class="header" href="#tabs">Tabs</a></h1>
 <h2 id="goals"><a class="header" href="#goals">Goals</a></h2>
 <ul>
-<li>Create a window with tabs that can be selected from</li>
-<li>Learn about radio buttons</li>
-<li>Learn about controlRoot and ControlMembers for transferring state</li>
+<li>Create a window with tabs that can be selected from.</li>
+<li>Learn about radio buttons.</li>
+<li>Learn about <code>ControlRoot</code> and <code>ControlMembers</code> for multi-entity interactions and states.</li>
 </ul>
 <h2 id="method"><a class="header" href="#method">Method</a></h2>
 <p>Tabs are pretty much radio buttons, so we will be using these to implement them in cobweb_ui.
 We will start with a basic window that should approximate what this book has taught so far.</p>
 <h3 id="starting-rust-code"><a class="header" href="#starting-rust-code">Starting rust code.</a></h3>
 <p>Hopefully this is familiar from previous chapters.</p>
-<pre><code class="language-rs">
-use bevy::prelude::*;
+<pre><code class="language-rs">use bevy::prelude::*;
 use bevy_cobweb_ui::prelude::*;
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -1047,11 +1046,11 @@ fn main() {
 </code></pre>
 <h3 id="starting-cob-file"><a class="header" href="#starting-cob-file">Starting COB file</a></h3>
 <p><code>GridNode</code> and <code>AbsoluteGridNode</code> are used to create an orderly scaled layout.</p>
-<p><code>FlexNode</code> is used to center the text on some titles.</p>
-<p>Note we can do some abstractions to tidy up the code, we will stick to simplicity at the expense of verbosity.
+<p><code>FlexNode</code> is used to center the text on some grid column titles.</p>
+<p>Note we could add abstractions to tidy up the code, but we will stick to simplicity at the expense of verbosity.
 Once we have the functionality sorted we look at some abstractions.</p>
 <p>Hopefully this code is also mostly familiar from previous chapters.</p>
-<pre><code>#scenes
+<pre><code class="language-rs">#scenes
 &quot;main_scene&quot;
     AbsoluteGridNode{left:30% width:40vw min_height:30vh   }
     BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 })
@@ -1082,14 +1081,13 @@ Once we have the functionality sorted we look at some abstractions.</p>
         BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 })
 
     &quot;footer_content&quot;
-            FlexNode{justify_main:Center}
-            &quot;text&quot;
-                TextLine{ text: &quot;I don't change&quot; }
-                TextLineColor(Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0})
+        FlexNode{justify_main:Center}
+        &quot;text&quot;
+            TextLine{ text: &quot;I don't change&quot; }
+            TextLineColor(Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0})
         
 
-
-//tab content that will be spawned at runtime
+// Tab content that will be spawned at runtime
 
 &quot;info_tab&quot;
     FlexNode{justify_main:Center}
@@ -1100,22 +1098,22 @@ Once we have the functionality sorted we look at some abstractions.</p>
     FlexNode{justify_main:Center}
     TextLine{text:&quot;Click me to quit&quot;}
 </code></pre>
-<h3 id="filling-in-tab_content"><a class="header" href="#filling-in-tab_content">Filling in tab_content</a></h3>
+<h3 id="filling-in-tab_content"><a class="header" href="#filling-in-tab_content">Filling in <code>tab_content</code></a></h3>
 <p>Let's run this and see our ui.</p>
 <ul>
 <li>Our starting code has an empty lightly coloured square box where our tab content should go.</li>
-<li>Two buttons are above the square box these will be our tab menus.</li>
-<li>A title and footer they are there to serve as normal constant values regardless of tab.</li>
+<li>Two buttons are above the square box. These will be our tab menus.</li>
+<li>A title and footer are there to serve as normal constant values regardless of tab.</li>
 </ul>
 <p>First thing to do now is spawn <code>info_tab</code> when <code>info</code> is clicked.</p>
 <pre><code class="language-rs">    //Snip
     c.ui_root()
         .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
-            //Get entity to place in our scene
+            // Get entity to place in our scene
             let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
             scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
                 scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    //Use this instead of c.get_entity()
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
                 });
@@ -1126,19 +1124,19 @@ Once we have the functionality sorted we look at some abstractions.</p>
 <pre><code class="language-rs">        //Snip    
         c.ui_root()
         .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
-            //Get entity to place in our scene
+            // Get entity to place in our scene
             let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
             scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
                 scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    //Use this instead of c.get_entity()
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
                 });
             });
-            //handling exit tab
+            // handling exit tab
             scene_handle.edit(&quot;tab_menu::exit&quot;, |scene_handle| {
                 scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    //Use this instead of c.get_entity()
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;exit_tab&quot;), &amp;mut s);
                 });
@@ -1146,51 +1144,50 @@ Once we have the functionality sorted we look at some abstractions.</p>
         });
 
 </code></pre>
-<p>We also need to clear the tab contents upon selecting a new tab.</p>
+<p>We also need to clear the tab contents upon selecting a new tab. Note that we use <code>?</code> syntax and end the closure with <code>DONE</code>.</p>
 <pre><code class="language-rs">    c.ui_root()
         .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
-            //Get entity to place in our scene
+            // Get entity to place in our scene
             let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
             scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
                 scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
-                        tab_commands.despawn_descendants();
-                    };
+                    c.get_entity(tab_content_entity).result()?.despawn_descendants();
 
-                    //Use this instead of c.get_entity()
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
+                    DONE
                 });
             });
-            //handling exit tab
+            // handling exit tab
             scene_handle.edit(&quot;tab_menu::exit&quot;, |scene_handle| {
                 scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
-                        tab_commands.despawn_descendants();
-                    };
-                    //Use this instead of c.get_entity()
+                    c.get_entity(tab_content_entity).result()?.despawn_descendants();
+
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;exit_tab&quot;), &amp;mut s);
+                    DONE
                 });
             });
         });
 </code></pre>
-<p>Ok we got it working but its not really fun or intuitive we still have some problems to solve.</p>
+<p>Ok we got it working, but its not really fun or intuitive. We still have some problems to solve.</p>
 <ul>
 <li>The tab selection doesn't communicate which tab is active.</li>
-<li>It should default to a tab.</li>
+<li>It should start with one tab selected.</li>
 </ul>
-<p>We will start with communication</p>
+<p>We will start with communication.</p>
 <h3 id="styling-our-tab-headers"><a class="header" href="#styling-our-tab-headers">Styling our tab headers</a></h3>
 <h4 id="initial-cob-changes"><a class="header" href="#initial-cob-changes">Initial Cob Changes</a></h4>
 <p>The plan is to distinguish between selected and deselected tabs by changing the background colour.</p>
 <p>To do this we need to use radio buttons.</p>
 <p>Adding this as below.</p>
-<pre><code>    &quot;tab_menu&quot;
+<pre><code class="language-rs">    &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
-        RadioGroup //&lt;--- Stores RadioButton State
+        RadioGroup //&lt;--- Sets up state for a group of RadioButtons
         &quot;info&quot;
-            RadioButton // &lt;---New Radio Button Code
+            RadioButton //&lt;--- New Radio Button
             FlexNode{justify_main:Center}
             &quot;text&quot;
                 TextLine{ text: &quot;Info&quot; }
@@ -1198,71 +1195,57 @@ Once we have the functionality sorted we look at some abstractions.</p>
             
         &quot;exit&quot;
             FlexNode{justify_main:Center}
-            RadioButton // &lt;---- New Radio Button Code
+            RadioButton //&lt;---- New Radio Button
             &quot;text&quot;
                 TextLine{ text: &quot;Exit button&quot; }
                 TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
 
 </code></pre>
-<p>These changes by itself will not have any noticable impact, we will need to also modify the rust code to allow selection.</p>
-<h4 id="rust-changes"><a class="header" href="#rust-changes">Rust changes</a></h4>
-<p>We need to put in our programming logic.</p>
-<p>as below</p>
-<pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
-    c.spawn(Camera2d);
-    c.ui_root()
+<p>These changes by themselves will not have any noticable impact. However, one thing we should change is switching from <code>on_pressed</code> to <code>on_select</code> since the radio button widget will be selecting tabs for us on press.</p>
+<pre><code class="language-rs">    c.ui_root()
         .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
-            //Get entity to place in our scene
+            // Get entity to place in our scene
             let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
-            // Menu that holds radio state
             scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
-                let info_button_entity = scene_handle.id();
+                scene_handle.on_select(move |mut c: Commands, mut s: SceneBuilder| { //&lt;--- now on_select
+                    c.get_entity(tab_content_entity).result()?.despawn_descendants();
 
-                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
-                        tab_commands.despawn_descendants();
-                    };
-
-                    //Use this instead of c.get_entity()
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
+                    DONE
                 });
             });
-            //handling exit tab
+            // handling exit tab
             scene_handle.edit(&quot;tab_menu::exit&quot;, |scene_handle| {
-                let exit_button_entity = scene_handle.id();
-                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
-                        tab_commands.despawn_descendants();
-                    };
-                    //Use this instead of c.get_entity()
+                scene_handle.on_select(move |mut c: Commands, mut s: SceneBuilder| { //&lt;--- now on_select
+                    c.get_entity(tab_content_entity).result()?.despawn_descendants();
+
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;exit_tab&quot;), &amp;mut s);
+                    DONE
                 });
             });
         });
-}
-
 </code></pre>
-<p>We can run this and see nothing has happened!</p>
-<p>However now we use pseudo state information in cob.</p>
+<p>Next we will use pseudo states provided by the radio button widget to show tab selection.</p>
 <h4 id="next-cob-changes"><a class="header" href="#next-cob-changes">Next COB Changes</a></h4>
 <p>Lets start with the code to add colours.</p>
-<pre><code>    &quot;tab_menu&quot;
+<pre><code class="language-rs">    &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup
         &quot;info&quot;
             RadioButton
             FlexNode{justify_main:Center}
-            //New colour logic
+            // New colour logic
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]  
             &quot;text&quot;
@@ -1272,15 +1255,14 @@ Once we have the functionality sorted we look at some abstractions.</p>
         &quot;exit&quot;
             FlexNode{justify_main:Center}
             RadioButton
-            //New colour logic
+            // New colour logic
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]  
             &quot;text&quot;
@@ -1289,23 +1271,22 @@ Once we have the functionality sorted we look at some abstractions.</p>
 
 </code></pre>
 <p>Let's explain this code.</p>
-<p><code>Animated&lt;BackgroundColor&gt;</code> allows you to define values based on the three css pseudostates <code>idle</code> <code>hover</code> <code>click</code></p>
-<p>By encapsulating with <code>Multi</code> we can access states to put in our values.</p>
-<pre><code>Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
+<p><code>Animated&lt;BackgroundColor&gt;</code> allows you to define values based on the three css interaction modes <code>idle</code>/<code>hover</code>/<code>press</code>.</p>
+<p>By encapsulating with <code>Multi</code> we can specify multiple animation sets tied to the entity's pseudostates.</p>
+<pre><code class="language-rs">Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
     {
-        idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-
+        idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
     }
     {
-        state:[Selected]
-        idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+        state: [Selected]
+        idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
     }
 ]  
 </code></pre>
 <p>Now when our tabs change, we know which tab we have open!</p>
-<h3 id="further-styling-and-sharing-state"><a class="header" href="#further-styling-and-sharing-state">Further styling and Sharing state</a></h3>
+<h3 id="further-styling-and-sharing-state"><a class="header" href="#further-styling-and-sharing-state">Further styling, and sharing state</a></h3>
 <p>I have added some more stying without incident.</p>
-<pre><code>#scenes
+<pre><code class="language-rs">#scenes
 &quot;main_scene&quot;
     AbsoluteGridNode{left:30% width:40vw min_height:30vh   }
     BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 })
@@ -1315,7 +1296,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
             TextLine{ text: &quot;Tabs education&quot; }
             TextLineColor(Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 })
 
-    //Actual tab menu
+    // Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup
@@ -1324,30 +1305,28 @@ Once we have the functionality sorted we look at some abstractions.</p>
             FlexNode{justify_main:Center}
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 10px,
@@ -1365,30 +1344,28 @@ Once we have the functionality sorted we look at some abstractions.</p>
             RadioButton
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla { hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla { hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]  
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 10px,
@@ -1400,7 +1377,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
                 TextLine{ text: &quot;Exit button&quot; }
                 TextLineColor(Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 })
 
-    //This is what changes based on menu selection
+    // This is what changes based on menu selection
     &quot;tab_content&quot;
         GridNode{ height:25vh }
         BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 })
@@ -1412,8 +1389,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
                 TextLineColor(Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0})
         
 
-
-//tab content that will be spawned at runtime
+// Tab content that will be spawned at runtime
 
 &quot;info_tab&quot;
     FlexNode{justify_main:Center}
@@ -1421,13 +1397,13 @@ Once we have the functionality sorted we look at some abstractions.</p>
         TextLine{text:&quot;You are in the info tab&quot;}
 
 &quot;exit_tab&quot;
-    //Not implemented
+    // Not implemented
     FlexNode{justify_main:Center}
     &quot;text&quot;
         TextLine{text:&quot;Click me to quit&quot;}
 </code></pre>
-<p>Next bit of styling I want to add is textline change colour on hover.</p>
-<pre><code>    //Actual tab menu
+<p>Next bit of styling I want to add is text changing colour on hover.</p>
+<pre><code class="language-rs">    // Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup
@@ -1436,30 +1412,28 @@ Once we have the functionality sorted we look at some abstractions.</p>
             FlexNode{justify_main:Center}
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 10px,
@@ -1470,15 +1444,15 @@ Once we have the functionality sorted we look at some abstractions.</p>
 
             &quot;text&quot;
                 TextLine{ text: &quot;Info&quot; }
-                //New Text Colour logic
+                // New Text Colour logic
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
-                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                        idle: Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover: Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
                     }
                     {
-                        state:[Selected]
-                        idle:#FFFF00
+                        state: [Selected]
+                        idle: #FFFF00
                     }
                 ]  
 
@@ -1488,30 +1462,28 @@ Once we have the functionality sorted we look at some abstractions.</p>
             RadioButton
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]  
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 10px,
@@ -1521,56 +1493,54 @@ Once we have the functionality sorted we look at some abstractions.</p>
             ]  
             &quot;text&quot;
                 TextLine{ text: &quot;Exit button&quot; }
-                //New Text Colour logic
+                // New Text Colour logic
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
-                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                        idle: Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover: Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
                     }
                     {
-                        state:[Selected]
+                        state: [Selected]
                         idle:#FFFF00
                     }
                 ]  
 </code></pre>
-<p>We have a problem the text only changes colour when you hover on the text directly, but we want it to be for the entire node.</p>
+<p>We have a problem. The text only changes colour when you hover on the text directly, but we want it change when any part of the button is hovered.</p>
 <p>This is a completely unforseen situation that I did not just invent for an example!</p>
 <h4 id="controlgroup"><a class="header" href="#controlgroup">ControlGroup</a></h4>
-<p><code>ControlMember</code> reads state information from the <code>ControlRoot</code></p>
-<pre><code>    //Actual tab menu
+<p><code>ControlMember</code> lets nodes respond to state information from the <code>ControlRoot</code>.</p>
+<pre><code class="language-rs">    // Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup
         &quot;info&quot;
             RadioButton
             FlexNode{justify_main:Center}
-            ControlRoot // &lt;-- Shares hover state
+            ControlRoot //&lt;--- Shares hover state
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 10px,
@@ -1581,15 +1551,15 @@ Once we have the functionality sorted we look at some abstractions.</p>
 
             &quot;text&quot;
                 TextLine{ text: &quot;Info&quot; }
-                ControlMember // &lt;-- reads hover state
+                ControlMember //&lt;--- reads hover state
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
-                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                        idle: Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover: Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
                     }
                     {
-                        state:[Selected]
-                        idle:#FFFF00
+                        state: [Selected]
+                        idle: #FFFF00
                     }
                 ]  
 
@@ -1597,33 +1567,31 @@ Once we have the functionality sorted we look at some abstractions.</p>
         &quot;exit&quot;
             FlexNode{justify_main:Center}
             RadioButton 
-            ControlRoot // &lt;-- Shares hover state
+            ControlRoot //&lt;--- Shares hover state
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]  
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
-                        color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: {
+                        color: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 10px,
@@ -1632,30 +1600,32 @@ Once we have the functionality sorted we look at some abstractions.</p>
                 }
             ]  
             &quot;text&quot;
-                ControlMember// &lt;-- reads hover state
+                ControlMember //&lt;--- reads hover state
                 TextLine{ text: &quot;Exit button&quot; }
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
-                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                        idle: Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover: Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
                     }
                     {
-                        state:[Selected]
+                        state: [Selected]
                         idle:#FFFF00
                     }
                 ]  
 </code></pre>
-<h2 id="abstractions-default-selection-and-cleanup"><a class="header" href="#abstractions-default-selection-and-cleanup">Abstractions default selection and cleanup</a></h2>
+<h2 id="abstractions-default-selection-and-cleanup"><a class="header" href="#abstractions-default-selection-and-cleanup">Abstractions: default selection and cleanup</a></h2>
 <p>Next chapter we will introduce new abstractions to make our COB code more managable.</p>
-<p>we will also handle default state</p>
+<p>We will also handle selecting the starting tab.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cleanup"><a class="header" href="#cleanup">Cleanup</a></h1>
 <h2 id="cob-cleanup"><a class="header" href="#cob-cleanup">COB cleanup</a></h2>
-<p>Our cob file from last chapter looks like the below.</p>
+<p>Our cob file from last chapter looks like below.</p>
 <p>It serves it's purpose but we can make this more maintainable.</p>
-<p>Ideally we would have done it at the start but the choice was made to focus on the actual concepts</p>
-<pre><code>#scenes
-&quot;main_scene&quot;
-    AbsoluteGridNode{left:30% width:40vw min_height:30vh   }
+<p>Ideally we would have done it at the start but the choice was made to focus on the basic concepts.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    AbsoluteGridNode{left:30% width:40vw min_height:30vh}
     BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 })
     &quot;title&quot;
         FlexNode{justify_main:Center}
@@ -1663,7 +1633,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
             TextLine{ text: &quot;Tabs education&quot; }
             TextLineColor(Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 })
 
-    //Actual tab menu
+    // Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup
@@ -1673,29 +1643,27 @@ Once we have the functionality sorted we look at some abstractions.</p>
             ControlRoot
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
+                    idle: {
                         color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
+                    state: [Selected]
+                    idle: {
                         color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
@@ -1710,12 +1678,12 @@ Once we have the functionality sorted we look at some abstractions.</p>
                 ControlMember
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
-                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                        idle: Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover: Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
                     }
                     {
-                        state:[Selected]
-                        idle:#FFFF00
+                        state: [Selected]
+                        idle: #FFFF00
                     }
                 ]  
 
@@ -1726,29 +1694,27 @@ Once we have the functionality sorted we look at some abstractions.</p>
             ControlRoot
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-                    hover:Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
-
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
+                    hover: Hsla{ hue:24 saturation:0.5 lightness:0.50 alpha:1.0 }
                 }
                 {
-                    state:[Selected]
-                    idle:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
+                    state: [Selected]
+                    idle: Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                 }
             ]  
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
+                    idle: {
                         color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
+                    state: [Selected]
+                    idle: {
                         color:Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 }
                         x_offset: 0px,
                         y_offset: 0px,
@@ -1762,16 +1728,16 @@ Once we have the functionality sorted we look at some abstractions.</p>
                 TextLine{ text: &quot;Exit button&quot; }
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
-                        hover:Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
+                        idle: Hsla{ hue:60 saturation:0.85 lightness:0.90 alpha:1.0 }
+                        hover: Hsla{ hue:221 saturation:0.0 lightness:1.0 alpha:1.0 }
                     }
                     {
-                        state:[Selected]
-                        idle:#FFFF00
+                        state: [Selected]
+                        idle: #FFFF00
                     }
                 ]  
 
-    //This is what changes based on menu selection
+    // This is what changes based on menu selection
     &quot;tab_content&quot;
         GridNode{ height:25vh }
         BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.20 alpha:0.5 })
@@ -1784,7 +1750,7 @@ Once we have the functionality sorted we look at some abstractions.</p>
         
 
 
-//tab content that will be spawned at runtime
+// Tab content that will be spawned at runtime
 
 &quot;info_tab&quot;
     FlexNode{justify_main:Center}
@@ -1792,15 +1758,16 @@ Once we have the functionality sorted we look at some abstractions.</p>
         TextLine{text:&quot;You are in the info tab&quot;}
 
 &quot;exit_tab&quot;
-    //Not implemented
+    // Not implemented
     FlexNode{justify_main:Center}
     &quot;text&quot;
         TextLine{text:&quot;Click me to quit&quot;}
-</code></pre>
-<h3 id="def"><a class="header" href="#def">def</a></h3>
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="defs"><a class="header" href="#defs"><code>#defs</code></a></h3>
 <p>We should start with defining colour names as we repeat many colours that are related.</p>
 <p>At the top of the file.</p>
-<pre><code>#defs
+<pre><code class="language-rs">#defs
 $window_colour = Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
 
 
@@ -1810,11 +1777,11 @@ $window_colour = Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
     BackgroundColor($window_colour)
     //snip
 </code></pre>
-<p>We will be repeating this pattern</p>
-<p>I postfixed all the names with colour as you can save other data like widths as well.</p>
-<pre><code>#defs
+<p>We will be repeating this pattern.</p>
+<p>I postfixed all the names with colour to disambiguate from other data we could add here like widths.</p>
+<pre><code class="language-rs">#defs
 $window_colour = Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-$title_text_colour =Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 }
+$title_text_colour = Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 }
 
 $tab_background_colour = Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
 
@@ -1841,7 +1808,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
             TextLine{ text: &quot;Tabs education&quot; }
             TextLineColor($title_text_colour)
 
-    //Actual tab menu
+    // Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup
@@ -1851,29 +1818,27 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
             ControlRoot
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:$tab_background_colour
-                    hover:$tab_hover_colour
-
+                    idle: $tab_background_colour
+                    hover: $tab_hover_colour
                 }
                 {
-                    state:[Selected]
-                    idle:$tab_selected_background_colour
+                    state: [Selected]
+                    idle: $tab_selected_background_colour
                 }
             ]
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
+                    idle: {
                         color:$box_shadow_colour
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
+                    state: [Selected]
+                    idle: {
                         color:$box_shadow_colour
                         x_offset: 0px,
                         y_offset: 0px,
@@ -1888,12 +1853,12 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
                 ControlMember
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:$text_line_idle_colour
-                        hover:$text_line_hover_colour
+                        idle: $text_line_idle_colour
+                        hover: $text_line_hover_colour
                     }
                     {
-                        state:[Selected]
-                        idle:$text_selected_colour
+                        state: [Selected]
+                        idle: $text_selected_colour
                     }
                 ]  
 
@@ -1904,29 +1869,27 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
             ControlRoot
             Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
                 {
-                    idle:$tab_background_colour
-                    hover:$tab_hover_colour
-
+                    idle: $tab_background_colour
+                    hover: $tab_hover_colour
                 }
                 {
-                    state:[Selected]
-                    idle:$tab_selected_background_colour
+                    state: [Selected]
+                    idle: $tab_selected_background_colour
                 }
             ]  
             Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
                 {
-                    idle:{
+                    idle: {
                         color:$box_shadow_colour
                         x_offset: 0px,
                         y_offset: 0px,
                         spread_radius: 1px,
                         blur_radius: 1px,
                     }
-
                 }
                 {
-                    state:[Selected]
-                    idle:{
+                    state: [Selected]
+                    idle: {
                         color:$box_shadow_colour
                         x_offset: 0px,
                         y_offset: 0px,
@@ -1940,16 +1903,16 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
                 TextLine{ text: &quot;Exit button&quot; }
                 Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
                     {
-                        idle:$text_line_idle_colour
-                        hover:$text_line_hover_colour
+                        idle: $text_line_idle_colour
+                        hover: $text_line_hover_colour
                     }
                     {
-                        state:[Selected]
-                        idle:$text_selected_colour
+                        state: [Selected]
+                        idle: $text_selected_colour
                     }
                 ]  
 
-    //This is what changes based on menu selection
+    // This is what changes based on menu selection
     &quot;tab_content&quot;
         GridNode{ height:25vh }
         BackgroundColor($tab_selected_background_colour)
@@ -1962,7 +1925,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
         
 
 
-//tab content that will be spawned at runtime
+// Tab content that will be spawned at runtime
 
 &quot;info_tab&quot;
     FlexNode{justify_main:Center}
@@ -1971,18 +1934,18 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
 &quot;calm_tab&quot; // &lt;-- We will be adding this below
 
 &quot;exit_tab&quot;
-    //Not implemented
+    // Not implemented
     FlexNode{justify_main:Center}
     &quot;text&quot;
         TextLine{text:&quot;Click me to quit&quot;}
 </code></pre>
 <h3 id="scene-macros"><a class="header" href="#scene-macros">Scene macros</a></h3>
-<p>Our two tab titles have an almost identical structure that we can make share.</p>
-<p>Changing the template is as simple as overwriting the value.</p>
-<p>Code is now much shorter and it's easier to change colour scheme at one location.</p>
-<pre><code>#defs
+<p>Our two tab titles have an almost identical structure that we can share using a scene macro.</p>
+<p>Changing the template is as simple as overwriting parts of its structure.</p>
+<p>Code is now much shorter and it's easier to change the colour scheme.</p>
+<pre><code class="language-rs">#defs
 $window_colour = Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
-$title_text_colour =Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 }
+$title_text_colour = Hsla{ hue:60 saturation:0.55 lightness:0.55 alpha:1.0 }
 
 $tab_background_colour = Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 }
 
@@ -2006,29 +1969,27 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
     ControlRoot
     Multi&lt;Animated&lt;BackgroundColor&gt;&gt;[
         {
-            idle:$tab_background_colour
-            hover:$tab_hover_colour
-
+            idle: $tab_background_colour
+            hover: $tab_hover_colour
         }
         {
-            state:[Selected]
-            idle:$tab_selected_background_colour
+            state: [Selected]
+            idle: $tab_selected_background_colour
         }
     ]
     Multi&lt;Animated&lt;NodeShadow&gt;&gt;[
         {
-            idle:{
+            idle: {
                 color:$box_shadow_colour
                 x_offset: 0px,
                 y_offset: 0px,
                 spread_radius: 1px,
                 blur_radius: 1px,
             }
-
         }
         {
-            state:[Selected]
-            idle:{
+            state: [Selected]
+            idle: {
                 color:$box_shadow_colour
                 x_offset: 0px,
                 y_offset: 0px,
@@ -2039,16 +2000,16 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
     ]
 
     &quot;text&quot;
-        TextLine{ text: &quot;PlaceHolder&quot; }
+        TextLine // Placeholder
         ControlMember
         Multi&lt;Animated&lt;TextLineColor&gt;&gt;[
             {
-                idle:$text_line_idle_colour
-                hover:$text_line_hover_colour
+                idle: $text_line_idle_colour
+                hover: $text_line_hover_colour
             }
             {
-                state:[Selected]
-                idle:$text_selected_colour
+                state: [Selected]
+                idle: $text_selected_colour
             }
         ]  
 \
@@ -2063,7 +2024,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
             TextLine{ text: &quot;Tabs education&quot; }
             TextLineColor($title_text_colour)
 
-    //Actual tab menu
+    // Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup
@@ -2078,7 +2039,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
                     TextLine{text:&quot;Exit&quot;}
             }
 
-    //This is what changes based on menu selection
+    // This is what changes based on menu selection
     &quot;tab_content&quot;
         GridNode{ height:25vh }
         BackgroundColor($tab_selected_background_colour)
@@ -2091,7 +2052,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
         
 
 
-//tab content that will be spawned at runtime
+// Tab content that will be spawned at runtime
 
 &quot;info_tab&quot;
     FlexNode{justify_main:Center}
@@ -2099,14 +2060,14 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
         TextLine{text:&quot;You are in the info tab&quot;}
 
 &quot;exit_tab&quot;
-    //Not implemented
+    // Not implemented
     FlexNode{justify_main:Center}
     &quot;text&quot;
         TextLine{text:&quot;Click me to quit&quot;}
 </code></pre>
 <h2 id="adding-one-more-tab"><a class="header" href="#adding-one-more-tab">Adding one more tab</a></h2>
 <p>With our fancy new scene macro it would be nice to add a new tab before we clean up the rust code.</p>
-<pre><code>    //Actual tab menu
+<pre><code class="language-rs">    // Actual tab menu
     &quot;tab_menu&quot;
         GridNode{grid_auto_flow:Column}
         RadioGroup //Stores RadioButton State
@@ -2129,8 +2090,7 @@ $footer_text_colour = Hsla{hue:0 saturation:0.00 lightness:0.85 alpha:1.0}
 <p>Calm will just be empty</p>
 <h2 id="rust-code-1"><a class="header" href="#rust-code-1">Rust code</a></h2>
 <p>This is our rust code from the previous chapter.</p>
-<pre><code class="language-rs">
-use bevy::prelude::*;
+<pre><code class="language-rs">use bevy::prelude::*;
 use bevy_cobweb_ui::prelude::*;
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -2139,31 +2099,27 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
         .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
-            //Get entity to place in our scene
+            // Get entity to place in our scene
             let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
             scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
-                let info_button_entity = scene_handle.id();
+                scene_handle.on_select(move |mut c: Commands, mut s: SceneBuilder| {
+                    c.get_entity(tab_content_entity).result()?.despawn_descendants();
 
-                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
-                        tab_commands.despawn_descendants();
-                    };
-
-                    //Use this instead of c.get_entity()
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;info_tab&quot;), &amp;mut s);
+                    DONE
                 });
             });
-            //handling exit tab
+            // handling exit tab
             scene_handle.edit(&quot;tab_menu::exit&quot;, |scene_handle| {
-                let exit_button_entity = scene_handle.id();
-                scene_handle.on_pressed(move |mut c: Commands, mut s: SceneBuilder| {
-                    if let Some(mut tab_commands) = c.get_entity(tab_content_entity) {
-                        tab_commands.despawn_descendants();
-                    };
-                    //Use this instead of c.get_entity()
+                scene_handle.on_select(move |mut c: Commands, mut s: SceneBuilder| {
+                    c.get_entity(tab_content_entity).result()?.despawn_descendants();
+
+                    // Use this instead of c.get_entity()
                     c.ui_builder(tab_content_entity)
                         .spawn_scene_simple((&quot;main.cob&quot;, &quot;exit_tab&quot;), &amp;mut s);
+                    DONE
                 });
             });
         });
@@ -2186,92 +2142,57 @@ fn main() {
         .run();
 }
 </code></pre>
-<h3 id="default-tab"><a class="header" href="#default-tab">Default tab</a></h3>
-<p>We can consolodate our tab change code, first lets get the information needed to load tab context.</p>
-<pre><code class="language-rs">#[derive(Event)]
-struct TabChange {
-    tab_content_entity: Entity,
-    scene_name: String,
-}
-
-</code></pre>
-<p>We can define an observer that will despawn other tab content, select our tab and spawn this tabs content.</p>
-<pre><code class="language-rs">fn tab_change(trigger: Trigger&lt;TabChange&gt;, mut c: Commands, mut s: SceneBuilder) {
-    if let Some(mut tab_commands) = c.get_entity(trigger.tab_content_entity) {
-        tab_commands.despawn_descendants();
-    };
-
-    c.ui_builder(trigger.tab_content_entity)
-        .spawn_scene_simple((&quot;main.cob&quot;, trigger.scene_name.clone()), &amp;mut s);
+<h3 id="starting-tab"><a class="header" href="#starting-tab">Starting tab</a></h3>
+<p>We can consolodate our tab change code into a function.</p>
+<pre><code class="language-rs">fn setup_tab_content(h: &amp;mut UiSceneHandle, content_entity: Entity, scene: &amp;'static str) {
+    h.on_select(move |mut c: Commands, mut s: SceneBuilder| {
+        c.get_entity(content_entity).result()?.despawn_descendants();
+        c.ui_builder(content_entity)
+            .spawn_scene_simple((&quot;main.cob&quot;, scene), &amp;mut s);
+        DONE
+    });
 }
 </code></pre>
-<p>Don't forget to add it.
-<code>.add_observer(tab_change)</code>.</p>
-<p>Now the code for calling the observers and setting up the initial tab</p>
+<p>Now the code for using that function and setting up the starting tab.</p>
 <pre><code class="language-rs">use bevy::prelude::*;
 use bevy_cobweb_ui::prelude::*;
 
 //-------------------------------------------------------------------------------------------------------------------
 
-#[derive(Event)]
-struct TabChange {
-    tab_content_entity: Entity,
-    scene_name: String,
+fn setup_tab_content(h: &amp;mut UiSceneHandle, content_entity: Entity, scene: &amp;'static str) {
+    h.on_select(move |mut c: Commands, mut s: SceneBuilder| {
+        c.get_entity(content_entity).result()?.despawn_descendants();
+        c.ui_builder(content_entity)
+            .spawn_scene_simple((&quot;main.cob&quot;, scene), &amp;mut s);
+        DONE
+    });
 }
+
+//-------------------------------------------------------------------------------------------------------------------
 
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
-            //Get entity to place in our scene
+        .spawn_scene_simple((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            // Get entity to place our tab scenes in.
             let tab_content_entity = scene_handle.get(&quot;tab_content&quot;).id();
+
             scene_handle.edit(&quot;tab_menu::info&quot;, |scene_handle| {
-                let info_button_entity = scene_handle.id();
+                setup_tab_content(scene_handle, tab_content_entity, &quot;info_tab&quot;);
 
-                scene_handle.on_pressed(move |mut c: Commands| {
-                    c.trigger(TabChange {
-                        tab_content_entity,
-                        scene_name: &quot;info_tab&quot;.to_string(),
-                    });
-                });
-
-                //Set it up as initial tab
-                scene_handle.commands().trigger(TabChange {
-                    tab_content_entity,
-                    scene_name: &quot;info_tab&quot;.to_string(),
-                });
+                // Set this up as the starting tab.
+                let id = scene_handle.id();
+                scene_handle.react().entity_event(id, Select);
             });
-            //calm tab
-
+            // calm tab
             scene_handle.edit(&quot;tab_menu::calm&quot;, |scene_handle| {
-                let calm_button_entity = scene_handle.id();
-                scene_handle.on_pressed(move |mut c: Commands| {
-                    c.trigger(TabChange {
-                        tab_content_entity,
-                        scene_name: &quot;calm_tab&quot;.to_string(),
-                    });
-                });
+                setup_tab_content(scene_handle, tab_content_entity, &quot;calm_tab&quot;);
             });
-            //handling exit tab
+            // handling exit tab
             scene_handle.edit(&quot;tab_menu::exit&quot;, |scene_handle| {
-                let exit_button_entity = scene_handle.id();
-                scene_handle.on_pressed(move |mut c: Commands| {
-                    c.trigger(TabChange {
-                        tab_content_entity,
-                        scene_name: &quot;exit_tab&quot;.to_string(),
-                    });
-                });
+                setup_tab_content(scene_handle, tab_content_entity, &quot;exit_tab&quot;);
             });
         });
-}
-
-fn tab_change(trigger: Trigger&lt;TabChange&gt;, mut c: Commands, mut s: SceneBuilder) {
-    if let Some(mut tab_commands) = c.get_entity(trigger.tab_content_entity) {
-        tab_commands.despawn_descendants();
-    };
-
-    c.ui_builder(trigger.tab_content_entity)
-        .spawn_scene_simple((&quot;main.cob&quot;, trigger.scene_name.clone()), &amp;mut s);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
