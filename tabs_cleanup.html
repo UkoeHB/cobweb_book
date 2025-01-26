@@ -139,10 +139,8 @@
 <p>Our cob file from last chapter looks like below.</p>
 <p>It serves it's purpose but we can make this more maintainable.</p>
 <p>Ideally we would have done it at the start but the choice was made to focus on the basic concepts.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
+<pre><code class="language-rs">#scenes
+&quot;main_scene&quot;
     AbsoluteGridNode{left:30% width:40vw min_height:30vh}
     BackgroundColor(Hsla{ hue:221 saturation:0.5 lightness:0.15 alpha:0.5 })
     &quot;title&quot;
@@ -280,8 +278,7 @@
     FlexNode{justify_main:Center}
     &quot;text&quot;
         TextLine{text:&quot;Click me to quit&quot;}
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <h3 id="defs"><a class="header" href="#defs"><code>#defs</code></a></h3>
 <p>We should start with defining colour names as we repeat many colours that are related.</p>
 <p>At the top of the file.</p>

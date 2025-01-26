@@ -141,17 +141,14 @@ When you read the documentation of each loadable hopefully you will be able to e
 <h2 id="node-shadow"><a class="header" href="#node-shadow">Node shadow</a></h2>
 <p>let's start with adding a <code>NodeShadow</code> to our example. The documentation can be found <a href="https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/ui_bevy/struct.NodeShadow.html">here</a>.</p>
 <p>At the time of writing it looked like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>pub struct NodeShadow {
+<pre><code class="language-rs">pub struct NodeShadow {
     pub color: Color,
     pub x_offset: Val,
     pub y_offset: Val,
     pub spread_radius: Val,
     pub blur_radius: Val,
 }
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <p>Let's start with <code>Val</code> before color as it is slightly simpler.</p>
 <h3 id="val"><a class="header" href="#val">Val</a></h3>
 <p><code>Val</code> variants can be written with special units (<code>px, %, vw, vh, vmin, vmax</code>) and the keyword <code>auto</code>. For example, <code>10px</code> is equivalent to <code>Px(10)</code>.</p>
@@ -162,16 +159,13 @@ When you read the documentation of each loadable hopefully you will be able to e
 <h4 id="newtype-collapsing"><a class="header" href="#newtype-collapsing">NewType collapsing</a></h4>
 <p>Loadable newtypes and newtype enum variants use newtype collapsing to simplify what you write. Newtypes are collapsed by discarding 'outer layers'.</p>
 <p>An example we have used for HSLA. This is written in rust:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>Color::Hsla(Hsla {
+<pre><code class="language-rs">Color::Hsla(Hsla {
     hue: 240.0,
     saturation:1.0,
     lightness: 0.5,
     alpha:1.0,
 })
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <p>And this is written in cob:</p>
 <p><code>Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }</code></p>
 <p>The rule for enums inside loadables is <code>A::B(C{ .. }) -&gt; B{ .. }</code>. Newtype collapsing can occur for loadables like <code>A(vec![]) -&gt; A[]</code>.</p>
@@ -179,10 +173,8 @@ When you read the documentation of each loadable hopefully you will be able to e
 <p>Not all fields in loadables need to be filled out. Every field left blank we will be defaulted. Only fields annotated with <code>#[reflect(default)]</code> can be skipped.</p>
 <h3 id="adding-nodeshadow"><a class="header" href="#adding-nodeshadow">Adding NodeShadow</a></h3>
 <p>With the above information we have enough to create our node shadow:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
+<pre><code class="language-rs">#scenes
+&quot;main_scene&quot;
     AbsoluteNode{left:40%}
     TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; }
     NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px} // &lt;-- our new node shadow
@@ -192,8 +184,7 @@ When you read the documentation of each loadable hopefully you will be able to e
         press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
     }
     
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <p>Done</p>
 <h3 id="floats"><a class="header" href="#floats">Floats</a></h3>
 <p>Floats are written similar to how they are written in rust.</p>
@@ -203,10 +194,8 @@ When you read the documentation of each loadable hopefully you will be able to e
 <li>Keywords <code>inf</code>/<code>-inf</code>/<code>nan</code>: infinity, negative infinity, <code>NaN</code>.</li>
 </ul>
 <p>Let's go ahead with an example using <code>size</code> in <code>TextLine</code>:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
+<pre><code class="language-rs">#scenes
+&quot;main_scene&quot;
     AbsoluteNode{left:40%}
     TextLine{ text: &quot;Hello, World!, I am writing using cobweb &quot; size:150 } // &lt;-- add the size here
     NodeShadow{color:#FF0000 spread_radius:10px blur_radius:5px}
@@ -216,8 +205,7 @@ When you read the documentation of each loadable hopefully you will be able to e
         press:Hsla{ hue:240 saturation:1.0 lightness:0.50 alpha:1.0 }
     }
 
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <h3 id="strings"><a class="header" href="#strings">Strings</a></h3>
 <p>Strings are handled similar to how rust string literals are handled.</p>
 <ul>

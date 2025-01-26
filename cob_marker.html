@@ -191,10 +191,8 @@ fn main() {
 }
 </code></pre>
 <p>And here is the cob file we've built, adding in some small button scenes:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;main_scene&quot;
+<pre><code class="language-rs">#scenes
+&quot;main_scene&quot;
     AbsoluteNode{left:40% flex_direction:Column}
     &quot;cell&quot;
         Animated&lt;BackgroundColor&gt;{
@@ -220,8 +218,7 @@ fn main() {
     TextLine{text:&quot;Despawn&quot;}
 &quot;respawn_button&quot;
     TextLine{text:&quot;Respawn&quot;}
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <p>The exit and despawn buttons could just as easily be added as children of <code>main_scene</code>.</p>
 <h2 id="rust-approach"><a class="header" href="#rust-approach">Rust approach</a></h2>
 <p>Let's look at the first way of doing this using what is likely to be a more familiar approach to you.</p>

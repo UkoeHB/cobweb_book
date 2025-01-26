@@ -138,9 +138,7 @@
 <p>We will be using rust to modify the contents of a text node at runtime (no hot reloading).</p>
 <h2 id="modify-the-cob-file"><a class="header" href="#modify-the-cob-file">Modify the cob file</a></h2>
 <p>Let's setup the cob file as below.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>&quot;scene&quot;
+<pre><code class="language-rs">&quot;scene&quot;
     AbsoluteNode{left:40%}
     &quot;cell&quot;
         Animated&lt;BackgroundColor&gt;{
@@ -152,8 +150,7 @@
         &quot;text&quot;
             TextLine{text:&quot;Hello, World!, I am writing using cobweb &quot;} // &lt;-- will be overwritten
 
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <p>We split position logic into a child node called <code>cell</code> which holds most of the positioning and styling logic.
 <code>cell</code> has a child called <code>text</code>. Text is a minimal node responsible for just text stuff.</p>
 <h3 id="why-we-split-text-from-styling"><a class="header" href="#why-we-split-text-from-styling">Why we split text from styling</a></h3>
@@ -180,10 +177,8 @@
 <p>Cobweb can also spawn new scenes inside other scenes. Let's start with an example.</p>
 <p>Below we have our new scene called <code>number_text</code>.</p>
 <p>If the concept of scenes was a bit confusing before, this should clarify it a bit more.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">scenes
-</span>&quot;scene&quot;
+<pre><code class="language-rs">#scenes
+&quot;scene&quot;
     AbsoluteNode{left:40% flex_direction:Column}
     &quot;cell&quot;
         Animated&lt;BackgroundColor&gt;{
@@ -200,8 +195,7 @@
     &quot;cell&quot;
         &quot;text&quot;
             TextLine{text:&quot;placeholder&quot;}
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <p>Now let's change our rust code to spawn some scenes.</p>
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
@@ -221,15 +215,12 @@
 }
 </code></pre>
 <p>We now have some numbers that appear based on your code. We can still modify the cob files and change styling:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>&quot;number_text&quot;
+<pre><code class="language-rs">&quot;number_text&quot;
     &quot;cell&quot;
         &quot;text&quot;
             TextLine{text:&quot;placeholder&quot;}
             TextLineColor(Hsla{hue:45 saturation:1.0 lightness:0.5 alpha:1.0}) // &lt;-- add this
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <h4 id="making-nodes-interactive"><a class="header" href="#making-nodes-interactive">Making nodes interactive</a></h4>
 <p>Setting our UI to react to the user is essential, and easy. Here we add <code>on_pressed</code> for our <code>&quot;number_text&quot;</code> node:</p>
 <pre><code class="language-rs">fn build_ui(mut c: Commands, mut s: SceneBuilder) {
