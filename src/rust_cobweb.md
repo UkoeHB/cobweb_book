@@ -6,7 +6,7 @@ We will be using rust to modify the contents of a text node at runtime (no hot r
 
 Let's setup the cob file as below.
 
-```rust
+```rs
 "scene"
     AbsoluteNode{left:40%}
     "cell"
@@ -63,7 +63,7 @@ Below we have our new scene called `number_text`.
 
 If the concept of scenes was a bit confusing before, this should clarify it a bit more.
 
-```rust
+```rs
 #scenes
 "scene"
     AbsoluteNode{left:40% flex_direction:Column}
@@ -107,7 +107,7 @@ fn build_ui(mut c: Commands, mut s: SceneBuilder) {
 
 We now have some numbers that appear based on your code. We can still modify the cob files and change styling:
 
-```rust
+```rs
 "number_text"
     "cell"
         "text"

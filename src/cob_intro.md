@@ -15,7 +15,7 @@ First, rerun the program if you have closed it.  We want to see the hot reloadin
 
 Let's change our cob file to be something like this:
 
-```rust
+```rs
 #scenes
 "main_scene"
     TextLine{ text: "Hello, World!, I am writing using cobweb " }
@@ -33,7 +33,7 @@ Types that implement the [instruction trait](https://docs.rs/bevy_cobweb_ui/late
 
 let's add another called `AbsoluteNode`:
 
-```rust
+```rs
 #scenes
 "main_scene"
     AbsoluteNode{left:40% top:30vh}
@@ -47,7 +47,7 @@ Separate fields are not comma separated.
 
 let's try another loadable `BackgroundColor`:
 
-```rust
+```rs
 #scenes
 "main_scene"
     AbsoluteNode{left:40%}
@@ -65,7 +65,7 @@ Let's add hovering effects. We will start off by changing the background colours
 
 ##### Hovering and pressing
 
-```rust
+```rs
 #scenes
 "main_scene"
     AbsoluteNode{left:40%}

@@ -8,7 +8,7 @@ It serves it's purpose but we can make this more maintainable.
 
 Ideally we would have done it at the start but the choice was made to focus on the basic concepts.
 
-```rust
+```rs
 #scenes
 "main_scene"
     AbsoluteGridNode{left:30% width:40vw min_height:30vh}

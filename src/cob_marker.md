@@ -60,7 +60,7 @@ fn main() {
 ```
 
 And here is the cob file we've built, adding in some small button scenes:
-```rust
+```rs
 #scenes
 "main_scene"
     AbsoluteNode{left:40% flex_direction:Column}

@@ -11,7 +11,7 @@ Rerun your program if you have closed it.
 let's start with adding a `NodeShadow` to our example. The documentation can be found [here](https://docs.rs/bevy_cobweb_ui/latest/bevy_cobweb_ui/ui_bevy/struct.NodeShadow.html).
 
 At the time of writing it looked like this:
-```rust
+```rs
 pub struct NodeShadow {
     pub color: Color,
     pub x_offset: Val,
@@ -41,7 +41,7 @@ Loadable newtypes and newtype enum variants use newtype collapsing to simplify w
 
 An example we have used for HSLA. This is written in rust:
 
-```rust
+```rs
 Color::Hsla(Hsla {
     hue: 240.0,
     saturation:1.0,
@@ -64,7 +64,7 @@ Not all fields in loadables need to be filled out. Every field left blank we wil
 
 With the above information we have enough to create our node shadow:
 
-```rust
+```rs
 #scenes
 "main_scene"
     AbsoluteNode{left:40%}
@@ -90,7 +90,7 @@ Floats are written similar to how they are written in rust.
 
 Let's go ahead with an example using `size` in `TextLine`:
 
-```rust
+```rs
 #scenes
 "main_scene"
     AbsoluteNode{left:40%}
