@@ -588,7 +588,7 @@ fn setup_tab_content(h: &mut UiSceneHandle, content_entity: Entity, scene: &'sta
 fn build_ui(mut c: Commands, mut s: SceneBuilder) {
     c.spawn(Camera2d);
     c.ui_root()
-        .spawn_scene_simple(("main.cob", "main_scene"), &mut s, |scene_handle| {
+        .spawn_scene(("main.cob", "main_scene"), &mut s, |scene_handle| {
             // Get entity to place our tab scenes in.
             let tab_content_entity = scene_handle.get("tab_content").id();
 
