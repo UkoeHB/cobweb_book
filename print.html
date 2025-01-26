@@ -2209,7 +2209,6 @@ fn main() {
         .add_plugins(CobwebUiPlugin)
         .load(&quot;main.cob&quot;)
         .add_systems(OnEnter(LoadState::Done), build_ui)
-        .add_observer(tab_change)
         .run();
 }
 </code></pre>
