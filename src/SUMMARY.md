@@ -14,5 +14,6 @@
 # Cookbook section
 - [Tabs](./tabs.md)
   - [Cleanup](./tabs_cleanup.md)
+- [Reactivity](./reactive.md)
 # Common errors
 - [Errors](./errors.md)
