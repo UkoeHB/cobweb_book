@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found - cobweb book</title>
-        <base href="/">
+        <title>Reactivity - cobweb book</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -76,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><a href="reactive.html"><strong aria-hidden="true">9.</strong> Reactivity</a></li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">10.</strong> Errors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting_starting.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded affix "><li class="part-title">Cob File Format</li><li class="chapter-item expanded "><a href="cob_intro.html"><strong aria-hidden="true">3.</strong> Cob files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cob_fields.html"><strong aria-hidden="true">3.1.</strong> Loadable fields</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Rust editing</li><li class="chapter-item expanded "><a href="rust_cobweb.html"><strong aria-hidden="true">4.</strong> Rust runtime modifications</a></li><li class="chapter-item expanded "><a href="cob_marker.html"><strong aria-hidden="true">5.</strong> Custom marker component</a></li><li class="chapter-item expanded affix "><li class="part-title">Final tutorial notes</li><li class="chapter-item expanded "><a href="cob_organization.html"><strong aria-hidden="true">6.</strong> Cob file organization</a></li><li class="chapter-item expanded "><a href="quick_notes.html"><strong aria-hidden="true">7.</strong> Quick notes</a></li><li class="chapter-item expanded affix "><li class="part-title">Cookbook section</li><li class="chapter-item expanded "><a href="tabs.html"><strong aria-hidden="true">8.</strong> Tabs</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tabs_cleanup.html"><strong aria-hidden="true">8.1.</strong> Cleanup</a></li></ol></li><li class="chapter-item expanded "><a href="reactive.html" class="active"><strong aria-hidden="true">9.</strong> Reactivity</a></li><li class="chapter-item expanded affix "><li class="part-title">Common errors</li><li class="chapter-item expanded "><a href="errors.html"><strong aria-hidden="true">10.</strong> Errors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -135,19 +134,115 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
+                        <h1 id="reactivity"><a class="header" href="#reactivity">Reactivity</a></h1>
+<p>This section will be using <code>bevy_cobweb</code> note that this is a companion crate of <code>bevy_cobweb_ui</code>.
+Ensure that <code>bevy_cobweb</code> is added as a dependency.</p>
+<h2 id="broadcasts"><a class="header" href="#broadcasts">Broadcasts</a></h2>
+<p>Perhaps the simplest general purpose way to ensure that your UI is up to date.
+Broadcasting tells your ui when it is time to update.</p>
+<p>Lets get straight to it.</p>
+<pre><pre class="playground"><code class="language-rust">use std::time::Duration;
+
+use bevy::{prelude::*, time::common_conditions};
+use bevy_cobweb::prelude::*;
+use bevy_cobweb_ui::prelude::*;
+
+fn main() {
+    App::new()
+        .add_plugins(bevy::DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                window_theme: Some(bevy::window::WindowTheme::Dark),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(CobwebUiPlugin)
+        .load(&quot;main.cob&quot;)
+        .add_systems(OnEnter(LoadState::Done), build_ui)
+        .add_systems(
+            Update,
+            update_ui.run_if(common_conditions::on_timer(Duration::from_millis(500))),
+        )
+        .run();
+}
+
+//dummy entity data
+#[derive(Component)]
+struct Score(usize);
+
+//see the broadcast below
+struct ScoreUpdate;
+
+fn build_ui(mut c: Commands, mut s: SceneBuilder) {
+    //Just going to initialise score here for this example
+    c.spawn(Score(0));
+
+    c.spawn(Camera2d);
+    c.ui_root()
+        .spawn_scene((&quot;main.cob&quot;, &quot;main_scene&quot;), &amp;mut s, |scene_handle| {
+            scene_handle.update_on(
+                broadcast::&lt;ScoreUpdate&gt;(), // This is what listens to the update, it will run first time as well
+                //TargetId is compulsory rest of the parametrs is just like any other system
+                |id: TargetId, mut editor: TextEditor, score: Query&lt;&amp;Score&gt;| {
+                    let score = score.single()?;
+                    write_text!(editor, *id, &quot;{}&quot;, score.0);
+
+                    DONE //Allows cobweb to handle results
+                },
+            );
+        });
+}
+
+//New logic to increment the score then let cob know to update
+fn update_ui(mut score: Query&lt;&amp;mut Score&gt;, mut cmd: Commands) -&gt; Result {
+    let mut score = score.single_mut()?;
+    score.0 += 1;
+
+    //Tell the UI to update
+    cmd.react().broadcast(ScoreUpdate);
+
+    println!(&quot;{}&quot;, score.0);
+    Ok(())
+}
+</code></pre></pre>
+<p>main.cob</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">scenes
+</span>&quot;main_scene&quot;
+    TextLine{ text: &quot;Hello, World!&quot; } //this text will be gone soon
+
+
+<span class="boring">}
+</span></code></pre></pre>
+<p>This program just updates a number every 500 milliseconds, cobweb updates the ui at the time of the changes.</p>
+<p>There is not much more to add other then you can have unlimited listeners and you may think of other non-ui purposes for broadcasts.</p>
+<h2 id="todo-reactresource"><a class="header" href="#todo-reactresource">TODO ReactResource</a></h2>
+<p>For resources you can use <code>ReactResource</code>.</p>
+<p>TODO rework the example</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="tabs_cleanup.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="errors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="tabs_cleanup.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="errors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
